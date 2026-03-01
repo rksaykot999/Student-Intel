@@ -1,0 +1,2551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Student Intel Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.min.css" rel="stylesheet">
+    <style>
+        /* CSS Variables for Consistent Design */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #e63946;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
+            --gradient-accent: linear-gradient(135deg, #4cc9f0, #4361ee);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04);
+            --border-radius: 12px;
+            --border-radius-lg: 20px;
+            --transition: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+            --font-primary: 'Poppins', sans-serif;
+            --font-heading: 'Orbitron', sans-serif;
+        }
+
+        /* Global Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-primary);
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            gap: 8px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: #3ab5d9;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: #e08715;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: #d32f3a;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.85rem;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            justify-content: center;
+        }
+
+        /* Sidebar Styles */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            background: var(--dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .sidebar-logo-highlight {
+            color: var(--primary);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-nav::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 0 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+            gap: 1rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-link-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex: 1;
+        }
+
+        .sidebar-user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .sidebar-user-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .sidebar-user-info p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 101;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Main Content Area */
+        .admin-main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+        }
+
+        /* Header Styles */
+        .admin-header {
+            height: var(--header-height);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        .admin-header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .admin-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .admin-breadcrumb a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .admin-breadcrumb a:hover {
+            color: var(--primary);
+        }
+
+        .admin-breadcrumb i {
+            font-size: 0.8rem;
+        }
+
+        .admin-header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-search {
+            display: flex;
+            align-items: center;
+            background: var(--gray-light);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+        }
+
+        .header-search:focus-within {
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .header-search input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 200px;
+            padding: 0.3rem;
+        }
+
+        .header-search-btn {
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .header-search-btn:hover {
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-notification {
+            position: relative;
+            background: transparent;
+            border: none;
+            color: var(--dark);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .header-notification:hover {
+            background: var(--gray-light);
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--dark);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .header-theme-toggle:hover {
+            background: var(--gray-light);
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .admin-content {
+            padding: 2rem;
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.students {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+        }
+
+        .stat-icon.teachers {
+            background: linear-gradient(135deg, #7209b7, #f72585);
+            color: white;
+        }
+
+        .stat-icon.courses {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            color: white;
+        }
+
+        .stat-icon.performance {
+            background: linear-gradient(135deg, #f8961e, #e63946);
+            color: white;
+        }
+
+        .stat-info h3 {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            font-family: var(--font-heading);
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .stat-change.positive {
+            color: #10b981;
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Tables */
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .tables-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .table-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-title {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .admin-table thead {
+            background: var(--gray-light);
+        }
+
+        .admin-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        .admin-table tbody tr {
+            transition: var(--transition);
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .admin-table tbody tr:hover {
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .admin-table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(76, 201, 240, 0.2);
+            color: #0d8ec4;
+        }
+
+        .status-badge.pending {
+            background: rgba(248, 150, 30, 0.2);
+            color: #c67c13;
+        }
+
+        .status-badge.inactive {
+            background: rgba(108, 117, 125, 0.2);
+            color: var(--gray);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .action-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-description {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+
+        .activity-icon.success {
+            background: rgba(76, 201, 240, 0.2);
+            color: #0d8ec4;
+        }
+
+        .activity-icon.warning {
+            background: rgba(248, 150, 30, 0.2);
+            color: #c67c13;
+        }
+
+        .activity-icon.danger {
+            background: rgba(230, 57, 70, 0.2);
+            color: var(--danger);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* System Status */
+        .system-status {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .status-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            background: var(--gray-light);
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-dot.online {
+            background: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .status-dot.warning {
+            background: var(--warning);
+            box-shadow: 0 0 0 3px rgba(248, 150, 30, 0.2);
+        }
+
+        .status-dot.offline {
+            background: var(--gray);
+            box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.2);
+        }
+
+        .status-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .status-info p {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin: 0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--dark);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        /* Footer */
+        .admin-footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .admin-footer {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .charts-grid, .tables-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-search input {
+                width: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                padding: 0 1rem;
+            }
+
+            .admin-content {
+                padding: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header-search {
+                display: none;
+            }
+
+            .admin-breadcrumb {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-indicators {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-actions {
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Student<span class="sidebar-logo-highlight">Intel</span></span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3 class="nav-section-title">Dashboard</h3>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Overview</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                            <span class="nav-link-badge">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-bell"></i>
+                            <span>Notifications</span>
+                            <span class="nav-link-badge">12</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <h3 class="nav-section-title">Management</h3>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Students</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span>Teachers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-book"></i>
+                            <span>Courses</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Schedules</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-clipboard-check"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <h3 class="nav-section-title">Academic</h3>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-tasks"></i>
+                            <span>Assignments</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Exams</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Grades</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-medal"></i>
+                            <span>Achievements</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <h3 class="nav-section-title">System</h3>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-users-cog"></i>
+                            <span>User Management</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Security</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-database"></i>
+                            <span>Backup & Restore</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <img src="images/Shakil-Al-Masum.jpeg" alt="Admin User">
+                <div class="sidebar-user-info">
+                    <h4>Shakil al Masum</h4>
+                    <p>System Administrator</p>
+                </div>
+            </div>
+            <button class="btn btn-icon btn-sm" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <div class="admin-breadcrumb">
+                    <a href="index.html">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Admin Dashboard</span>
+                </div>
+            </div>
+
+            <div class="admin-header-right">
+                <div class="header-search">
+                    <input type="text" placeholder="Search admin panel...">
+                    <button class="header-search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <div class="header-actions">
+                    <button class="header-notification" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">5</span>
+                    </button>
+                    <button class="header-theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="admin-content">
+            <!-- Page Header -->
+            <div class="section-title">
+                <div>
+                    <h1>Admin Dashboard</h1>
+                    <p>Welcome back, Admin - Ponkoj Bisash. Here's what's happening with your institution today.</p>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="quickReportBtn">
+                        <i class="fas fa-download"></i> Generate Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon students">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Students</h3>
+                        <div class="stat-value">2,847</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12.5% from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon teachers">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Teachers</h3>
+                        <div class="stat-value">142</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>5.3% from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon courses">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Courses</h3>
+                        <div class="stat-value">86</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8.7% from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon performance">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Avg. Performance</h3>
+                        <div class="stat-value">84.2%</div>
+                        <div class="stat-change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>2.1% from last month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Student Performance Trend</h3>
+                        <select class="form-control" style="width: auto; padding: 0.5rem;">
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                            <option selected>Last 90 Days</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Course Enrollment Distribution</h3>
+                        <select class="form-control" style="width: auto; padding: 0.5rem;">
+                            <option>Current Semester</option>
+                            <option selected>All Time</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="enrollmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="section-title">
+                <h2>Quick Actions</h2>
+            </div>
+
+            <div class="quick-actions-grid">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h4 class="action-title">Add New Student</h4>
+                    <p class="action-description">Register a new student to the system</p>
+                    <button class="btn btn-primary btn-sm" onclick="openModal('addStudentModal')">
+                        <i class="fas fa-plus"></i> Add Student
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <h4 class="action-title">Create Schedule</h4>
+                    <p class="action-description">Create or edit class schedules</p>
+                    <button class="btn btn-secondary btn-sm" onclick="openModal('scheduleModal')">
+                        <i class="fas fa-calendar-alt"></i> Manage Schedules
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <h4 class="action-title">Upload Grades</h4>
+                    <p class="action-description">Bulk upload student grades</p>
+                    <button class="btn btn-success btn-sm" onclick="openModal('uploadModal')">
+                        <i class="fas fa-upload"></i> Upload Now
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h4 class="action-title">Generate Reports</h4>
+                    <p class="action-description">Create custom analytics reports</p>
+                    <button class="btn btn-warning btn-sm" id="generateReportBtn">
+                        <i class="fas fa-chart-bar"></i> Create Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tables Section -->
+            <div class="tables-grid">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3 class="table-title">Recent Student Registrations</h3>
+                        <button class="btn btn-outline btn-sm" onclick="openModal('studentsModal')">
+                            View All
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>ID</th>
+                                    <th>Grade</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="user-cell">
+                                            <img src="https://i.pravatar.cc/40?img=1" class="user-avatar" alt="Student">
+                                            <div>
+                                                <strong>Emma Wilson</strong><br>
+                                                <small>emma.w@student.edu</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>#STU-2023-045</td>
+                                    <td>11th Grade</td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-icon btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="user-cell">
+                                            <img src="https://i.pravatar.cc/40?img=2" class="user-avatar" alt="Student">
+                                            <div>
+                                                <strong>James Rodriguez</strong><br>
+                                                <small>james.r@student.edu</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>#STU-2023-046</td>
+                                    <td>10th Grade</td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-icon btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="user-cell">
+                                            <img src="https://i.pravatar.cc/40?img=3" class="user-avatar" alt="Student">
+                                            <div>
+                                                <strong>Sophia Chen</strong><br>
+                                                <small>sophia.c@student.edu</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>#STU-2023-047</td>
+                                    <td>12th Grade</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-icon btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="user-cell">
+                                            <img src="https://i.pravatar.cc/40?img=4" class="user-avatar" alt="Student">
+                                            <div>
+                                                <strong>Michael Brown</strong><br>
+                                                <small>michael.b@student.edu</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>#STU-2023-048</td>
+                                    <td>11th Grade</td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-icon btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3 class="table-title">System Alerts</h3>
+                        <button class="btn btn-outline btn-sm" onclick="markAllAlertsAsRead()">
+                            Mark All as Read
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Alert</th>
+                                    <th>Severity</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Low attendance detected</strong><br>
+                                        <small>Grade 10 - Mathematics Class</small>
+                                    </td>
+                                    <td><span class="status-badge warning">Warning</span></td>
+                                    <td>Today, 10:30 AM</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="viewAlertDetails(1)">
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>System backup completed</strong><br>
+                                        <small>Database backup successful</small>
+                                    </td>
+                                    <td><span class="status-badge active">Info</span></td>
+                                    <td>Yesterday, 2:00 AM</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="viewAlertDetails(2)">
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Grade submission deadline</strong><br>
+                                        <small>Final grades due in 3 days</small>
+                                    </td>
+                                    <td><span class="status-badge warning">Warning</span></td>
+                                    <td>Nov 28, 2023</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="viewAlertDetails(3)">
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>New user registration</strong><br>
+                                        <small>5 new teachers registered</small>
+                                    </td>
+                                    <td><span class="status-badge active">Info</span></td>
+                                    <td>Nov 27, 2023</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="viewAlertDetails(4)">
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="tables-grid">
+                <div class="activity-feed">
+                    <h3 class="table-title">Recent Activity</h3>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <div class="activity-icon success">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4 class="activity-title">New Student Registered</h4>
+                                <p class="activity-description">Emma Wilson was added to Grade 11 by Admin</p>
+                                <span class="activity-time">10 minutes ago</span>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon warning">
+                                <i class="fas fa-file-upload"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4 class="activity-title">Grades Updated</h4>
+                                <p class="activity-description">Mathematics mid-term grades uploaded by Dr. Smith</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon danger">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4 class="activity-title">Attendance Alert</h4>
+                                <p class="activity-description">3 students marked absent in Physics class</p>
+                                <span class="activity-time">5 hours ago</span>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-icon success">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4 class="activity-title">Report Generated</h4>
+                                <p class="activity-description">Quarterly performance report exported by Admin</p>
+                                <span class="activity-time">Yesterday, 3:45 PM</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="system-status">
+                    <h3 class="table-title">System Status</h3>
+                    <div class="status-indicators">
+                        <div class="status-indicator">
+                            <div class="status-dot online"></div>
+                            <div class="status-info">
+                                <h4>Database Server</h4>
+                                <p>All systems operational</p>
+                            </div>
+                        </div>
+                        <div class="status-indicator">
+                            <div class="status-dot online"></div>
+                            <div class="status-info">
+                                <h4>Application Server</h4>
+                                <p>Running optimally</p>
+                            </div>
+                        </div>
+                        <div class="status-indicator">
+                            <div class="status-dot warning"></div>
+                            <div class="status-info">
+                                <h4>Storage</h4>
+                                <p>85% used - Consider cleanup</p>
+                            </div>
+                        </div>
+                        <div class="status-indicator">
+                            <div class="status-dot online"></div>
+                            <div class="status-info">
+                                <h4>Backup System</h4>
+                                <p>Last backup: 2 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="admin-footer">
+        <div class="footer-content">
+            <p>&copy; 2023 Student Intel Management. All rights reserved. v4.2.1</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Support</a>
+                <a href="#">Documentation</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal" id="addStudentModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('addStudentModal')">&times;</button>
+            <h2 class="modal-title">Add New Student</h2>
+            <form class="modal-form" id="addStudentForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" placeholder="Enter student's full name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" placeholder="Enter student's email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Grade Level</label>
+                    <select class="form-control" required>
+                        <option value="">Select Grade</option>
+                        <option value="9">9th Grade</option>
+                        <option value="10">10th Grade</option>
+                        <option value="11">11th Grade</option>
+                        <option value="12">12th Grade</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Parent/Guardian Contact</label>
+                    <input type="text" class="form-control" placeholder="Enter parent contact information">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Student</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="scheduleModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('scheduleModal')">&times;</button>
+            <h2 class="modal-title">Manage Class Schedule</h2>
+            <form class="modal-form" id="scheduleForm">
+                <div class="form-group">
+                    <label class="form-label">Course</label>
+                    <select class="form-control" required>
+                        <option value="">Select Course</option>
+                        <option value="math">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="english">English</option>
+                        <option value="history">History</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Teacher</label>
+                    <select class="form-control" required>
+                        <option value="">Select Teacher</option>
+                        <option value="smith">Dr. Smith</option>
+                        <option value="johnson">Dr. Johnson</option>
+                        <option value="williams">Ms. Williams</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Day of Week</label>
+                    <select class="form-control" required>
+                        <option value="">Select Day</option>
+                        <option value="monday">Monday</option>
+                        <option value="tuesday">Tuesday</option>
+                        <option value="wednesday">Wednesday</option>
+                        <option value="thursday">Thursday</option>
+                        <option value="friday">Friday</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Time</label>
+                    <input type="time" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Room Number</label>
+                    <input type="text" class="form-control" placeholder="Enter room number" required>
+                </div>
+                <button type="submit" class="btn btn-secondary">Create Schedule</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('uploadModal')">&times;</button>
+            <h2 class="modal-title">Upload Grades</h2>
+            <form class="modal-form" id="uploadForm">
+                <div class="form-group">
+                    <label class="form-label">Select Course</label>
+                    <select class="form-control" required>
+                        <option value="">Select Course</option>
+                        <option value="math101">Mathematics 101</option>
+                        <option value="sci201">Science 201</option>
+                        <option value="eng101">English 101</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Grade Type</label>
+                    <select class="form-control" required>
+                        <option value="">Select Grade Type</option>
+                        <option value="midterm">Mid-term Exam</option>
+                        <option value="final">Final Exam</option>
+                        <option value="assignment">Assignment</option>
+                        <option value="project">Project</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Upload CSV File</label>
+                    <input type="file" class="form-control" accept=".csv" required>
+                    <small style="color: var(--gray); margin-top: 0.5rem;">Upload a CSV file with student IDs and grades</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" required>
+                        I confirm these grades are accurate
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-success">Upload Grades</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div class="modal" id="notificationPanel">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="modal-close" onclick="closeModal('notificationPanel')">&times;</button>
+            <h2 class="modal-title">Notifications</h2>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4 class="activity-title">System Maintenance</h4>
+                        <p class="activity-description">Scheduled maintenance on Dec 15, 2:00 AM</p>
+                        <span class="activity-time">1 hour ago</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon success">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4 class="activity-title">Backup Completed</h4>
+                        <p class="activity-description">Weekly database backup successful</p>
+                        <span class="activity-time">3 hours ago</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon danger">
+                        <i class="fas fa-user-slash"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4 class="activity-title">Login Alert</h4>
+                        <p class="activity-description">New login from unrecognized device</p>
+                        <span class="activity-time">Yesterday</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-outline" style="width: 100%; margin-top: 1rem;" onclick="markAllNotificationsAsRead()">
+                Mark All as Read
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script>
+        // Admin Panel JavaScript
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize components
+            initSidebar();
+            initCharts();
+            initModals();
+            initNotifications();
+            initThemeToggle();
+            initSearch();
+            
+            // Set active nav link
+            setActiveNavLink();
+            
+            // Initialize tooltips
+            initTooltips();
+        });
+        
+        // Sidebar Toggle
+        function initSidebar() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('adminSidebar');
+            const mainContent = document.querySelector('.admin-main');
+            const footer = document.querySelector('.admin-footer');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                sidebarToggle.innerHTML = sidebar.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 1024 && 
+                    !sidebar.contains(e.target) && 
+                    !sidebarToggle.contains(e.target) &&
+                    sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                    sidebarToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+            
+            // Logout button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to log out?')) {
+                        showNotification('Logged out successfully', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    }
+                });
+            }
+        }
+        
+        // Initialize Charts
+        function initCharts() {
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            const performanceChart = new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12'],
+                    datasets: [{
+                        label: 'Average Score (%)',
+                        data: [78, 82, 80, 85, 83, 87, 84, 86, 88, 85, 87, 89],
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 70,
+                            max: 100,
+                            grid: {
+                                drawBorder: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Enrollment Chart
+            const enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
+            const enrollmentChart = new Chart(enrollmentCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Mathematics', 'Science', 'English', 'History', 'Arts', 'Physical Education'],
+                    datasets: [{
+                        data: [28, 22, 18, 15, 10, 7],
+                        backgroundColor: [
+                            '#4361ee',
+                            '#7209b7',
+                            '#4cc9f0',
+                            '#f72585',
+                            '#f8961e',
+                            '#e63946'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+            
+            // Update charts on window resize
+            window.addEventListener('resize', () => {
+                performanceChart.resize();
+                enrollmentChart.resize();
+            });
+        }
+        
+        // Modal Management
+        function initModals() {
+            // Quick report button
+            const quickReportBtn = document.getElementById('quickReportBtn');
+            if (quickReportBtn) {
+                quickReportBtn.addEventListener('click', () => {
+                    showNotification('Generating report... This may take a moment.', 'info');
+                    
+                    // Simulate report generation
+                    setTimeout(() => {
+                        showNotification('Report generated successfully! Download will start shortly.', 'success');
+                        
+                        // Simulate download
+                        setTimeout(() => {
+                            const link = document.createElement('a');
+                            link.href = '#';
+                            link.download = 'student-intel-report-' + new Date().toISOString().split('T')[0] + '.pdf';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        }, 1000);
+                    }, 2000);
+                });
+            }
+            
+            // Generate report button
+            const generateReportBtn = document.getElementById('generateReportBtn');
+            if (generateReportBtn) {
+                generateReportBtn.addEventListener('click', () => {
+                    openModal('uploadModal');
+                });
+            }
+            
+            // Form submissions
+            const forms = document.querySelectorAll('.modal-form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const modalId = this.closest('.modal').id;
+                    closeModal(modalId);
+                    
+                    // Show success notification
+                    let message = '';
+                    switch(modalId) {
+                        case 'addStudentModal':
+                            message = 'Student added successfully!';
+                            break;
+                        case 'scheduleModal':
+                            message = 'Schedule created successfully!';
+                            break;
+                        case 'uploadModal':
+                            message = 'Grades uploaded successfully!';
+                            break;
+                        default:
+                            message = 'Action completed successfully!';
+                    }
+                    
+                    showNotification(message, 'success');
+                    
+                    // Reset form
+                    this.reset();
+                });
+            });
+            
+            // Close modal when clicking outside
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    closeModal(e.target.id);
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const openModal = document.querySelector('.modal.active');
+                    if (openModal) {
+                        closeModal(openModal.id);
+                    }
+                }
+            });
+        }
+        
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        // Notification System
+        function initNotifications() {
+            const notificationBtn = document.getElementById('notificationBtn');
+            if (notificationBtn) {
+                notificationBtn.addEventListener('click', () => {
+                    openModal('notificationPanel');
+                });
+            }
+        }
+        
+        function markAllNotificationsAsRead() {
+            const badge = document.querySelector('.notification-badge');
+            if (badge) {
+                badge.style.display = 'none';
+            }
+            closeModal('notificationPanel');
+            showNotification('All notifications marked as read', 'success');
+        }
+        
+        function markAllAlertsAsRead() {
+            showNotification('All alerts marked as read', 'success');
+        }
+        
+        function viewAlertDetails(alertId) {
+            showNotification(`Viewing details for alert #${alertId}`, 'info');
+        }
+        
+        // Theme Toggle
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                // Check for saved theme
+                const savedTheme = localStorage.getItem('admin-theme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-theme');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+                
+                themeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-theme');
+                    
+                    if (document.body.classList.contains('dark-theme')) {
+                        localStorage.setItem('admin-theme', 'dark');
+                        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    } else {
+                        localStorage.setItem('admin-theme', 'light');
+                        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    }
+                });
+            }
+        }
+        
+        // Search Functionality
+        function initSearch() {
+            const searchInput = document.querySelector('.header-search input');
+            const searchBtn = document.querySelector('.header-search-btn');
+            
+            if (searchInput && searchBtn) {
+                searchBtn.addEventListener('click', () => {
+                    performSearch(searchInput.value);
+                });
+                
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        performSearch(searchInput.value);
+                    }
+                });
+            }
+        }
+        
+        function performSearch(query) {
+            if (query.trim()) {
+                showNotification(`Searching for: "${query}"`, 'info');
+                // In a real application, you would perform the search here
+                console.log('Search query:', query);
+            }
+        }
+        
+        // Set Active Navigation Link
+        function setActiveNavLink() {
+            const currentPage = 'overview'; // This would be dynamic in a real app
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Set the first link (Overview) as active for demo purposes
+            if (navLinks.length > 0) {
+                navLinks[0].classList.add('active');
+            }
+        }
+        
+        // Initialize Tooltips
+        function initTooltips() {
+            const tooltipElements = document.querySelectorAll('[data-tooltip]');
+            
+            tooltipElements.forEach(element => {
+                element.addEventListener('mouseenter', (e) => {
+                    const tooltipText = element.getAttribute('data-tooltip');
+                    if (tooltipText) {
+                        createTooltip(e.target, tooltipText);
+                    }
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    removeTooltip();
+                });
+            });
+        }
+        
+        function createTooltip(element, text) {
+            removeTooltip();
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = text;
+            tooltip.style.position = 'absolute';
+            tooltip.style.background = 'var(--dark)';
+            tooltip.style.color = 'white';
+            tooltip.style.padding = '0.5rem 1rem';
+            tooltip.style.borderRadius = 'var(--border-radius)';
+            tooltip.style.fontSize = '0.85rem';
+            tooltip.style.zIndex = '10000';
+            tooltip.style.boxShadow = 'var(--shadow-lg)';
+            
+            document.body.appendChild(tooltip);
+            
+            const rect = element.getBoundingClientRect();
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+            
+            element.dataset.tooltipId = 'tooltip-' + Date.now();
+        }
+        
+        function removeTooltip() {
+            const existingTooltip = document.querySelector('.tooltip');
+            if (existingTooltip) {
+                existingTooltip.remove();
+            }
+        }
+        
+        // Notification Function
+        function showNotification(message, type = 'info') {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.global-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            const notification = document.createElement('div');
+            notification.className = `global-notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-message">
+                    <i class="fas fa-${getNotificationIconByType(type)}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Add styles if not already added
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    .global-notification {
+                        position: fixed;
+                        top: 100px;
+                        right: 2rem;
+                        background: white;
+                        padding: 1rem 1.5rem;
+                        border-radius: 12px;
+                        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        z-index: 10000;
+                        transform: translateX(400px);
+                        opacity: 0;
+                        transition: all 0.3s ease;
+                        max-width: 400px;
+                    }
+                    .global-notification.show {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    .global-notification.info {
+                        border-left: 4px solid #4361ee;
+                    }
+                    .global-notification.success {
+                        border-left: 4px solid #4cc9f0;
+                    }
+                    .global-notification.error {
+                        border-left: 4px solid #e63946;
+                    }
+                    .notification-message {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.7rem;
+                        flex: 1;
+                    }
+                    .notification-message i {
+                        font-size: 1.2rem;
+                    }
+                    .global-notification.info .notification-message i {
+                        color: #4361ee;
+                    }
+                    .global-notification.success .notification-message i {
+                        color: #4cc9f0;
+                    }
+                    .global-notification.error .notification-message i {
+                        color: #e63946;
+                    }
+                    .notification-close {
+                        background: none;
+                        border: none;
+                        color: #6c757d;
+                        cursor: pointer;
+                        padding: 0.3rem;
+                        border-radius: 4px;
+                        transition: all 0.3s ease;
+                    }
+                    .notification-close:hover {
+                        background: #f8f9fa;
+                        color: #1d3557;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Auto hide after 5 seconds
+            const autoHide = setTimeout(() => {
+                hideNotification(notification);
+            }, 5000);
+            
+            // Close button
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                clearTimeout(autoHide);
+                hideNotification(notification);
+            });
+            
+            function hideNotification(notificationElement) {
+                notificationElement.classList.remove('show');
+                setTimeout(() => {
+                    if (notificationElement.parentNode) {
+                        notificationElement.remove();
+                    }
+                }, 300);
+            }
+        }
+        
+        function getNotificationIconByType(type) {
+            const icons = {
+                info: 'info-circle',
+                success: 'check-circle',
+                error: 'exclamation-circle'
+            };
+            return icons[type] || 'info-circle';
+        }
+        
+        // Simulate real-time updates
+        function simulateRealTimeUpdates() {
+            // Update stats randomly
+            setInterval(() => {
+                const statCards = document.querySelectorAll('.stat-card');
+                statCards.forEach(card => {
+                    const valueElement = card.querySelector('.stat-value');
+                    if (valueElement) {
+                        const currentValue = parseInt(valueElement.textContent.replace(/,/g, ''));
+                        const change = Math.floor(Math.random() * 21) - 10; // Random change between -10 and +10
+                        const newValue = Math.max(0, currentValue + change);
+                        valueElement.textContent = newValue.toLocaleString();
+                        
+                        // Update change indicator
+                        const changeElement = card.querySelector('.stat-change');
+                        if (changeElement) {
+                            if (change > 0) {
+                                changeElement.className = 'stat-change positive';
+                                changeElement.innerHTML = `<i class="fas fa-arrow-up"></i><span>${change} from last update</span>`;
+                            } else if (change < 0) {
+                                changeElement.className = 'stat-change negative';
+                                changeElement.innerHTML = `<i class="fas fa-arrow-down"></i><span>${Math.abs(change)} from last update</span>`;
+                            } else {
+                                changeElement.className = 'stat-change';
+                                changeElement.innerHTML = `<span>No change</span>`;
+                            }
+                        }
+                    }
+                });
+            }, 30000); // Update every 30 seconds
+        }
+        
+        // Start real-time updates
+        setTimeout(simulateRealTimeUpdates, 5000);
+        
+        // Add tooltip to buttons
+        document.querySelectorAll('.btn-icon').forEach(btn => {
+            if (!btn.hasAttribute('data-tooltip')) {
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    let tooltip = '';
+                    if (icon.classList.contains('fa-eye')) {
+                        tooltip = 'View Details';
+                    } else if (icon.classList.contains('fa-edit')) {
+                        tooltip = 'Edit';
+                    } else if (icon.classList.contains('fa-trash')) {
+                        tooltip = 'Delete';
+                    } else if (icon.classList.contains('fa-download')) {
+                        tooltip = 'Download';
+                    }
+                    
+                    if (tooltip) {
+                        btn.setAttribute('data-tooltip', tooltip);
+                    }
+                }
+            }
+        });
+        
+        // Initialize tooltips again for dynamically added elements
+        setTimeout(initTooltips, 100);
+    </script>
+</body>
+</html>

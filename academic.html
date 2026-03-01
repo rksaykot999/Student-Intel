@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academics | Student Intel - Advanced Student Management</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        /* ==== CONSISTENT STYLES WITH MAIN WEBSITE ==== */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 12px;
+            --border-radius-lg: 20px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: #f8fafc;
+            overflow-x: hidden;
+            padding-top: 80px;
+        }
+
+        .font-poppins {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .font-heading {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* ==== ACADEMICS SPECIFIC STYLES ==== */
+        .academic-hero {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%);
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .academic-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .academic-hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        /* Programs Section */
+        .programs-section {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .program-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid #e5e7eb;
+        }
+
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .program-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .program-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .program-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .program-body {
+            padding: 2rem;
+        }
+
+        .program-details {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .program-details li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            color: var(--gray);
+        }
+
+        .program-details i {
+            color: var(--primary);
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        /* Academic Calendar */
+        .calendar-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05) 0%, rgba(114, 9, 183, 0.05) 100%);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .calendar-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .calendar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+
+        .calendar-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+
+        .calendar-list {
+            list-style: none;
+        }
+
+        .calendar-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .calendar-list li:last-child {
+            border-bottom: none;
+        }
+
+        .event-name {
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .event-date {
+            color: var(--primary);
+            font-weight: 600;
+            background: rgba(67, 97, 238, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+        }
+
+        /* Faculty Section */
+        .faculty-section {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .faculty-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .faculty-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .faculty-info {
+            padding: 1.5rem;
+        }
+
+        .faculty-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .faculty-position {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .faculty-department {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .faculty-qualification {
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        /* Resources Section */
+        .resources-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05) 0%, rgba(114, 9, 183, 0.05) 100%);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .resource-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .resource-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .resource-desc {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+
+            .academic-hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .programs-grid,
+            .calendar-grid,
+            .faculty-grid,
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .academic-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-title::after {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header (fully Tailwind) -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300" id="mainHeader">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a class="flex items-center" href="#">
+                    <i class="fas fa-graduation-cap text-2xl text-[#4361ee] mr-2"></i>
+                    <span class="text-2xl font-bold text-gray-900">
+                        Student<span class="text-[#4361ee]">Intel</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="about.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">About Us</a>
+                    <a href="academic.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Academics</a>
+                    <a href="department.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Departments</a>
+                    
+                    <!-- Students Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center">
+                            Students <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full left-0 w-56 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> All Students
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-chart-line w-5 mr-3 text-[#4361ee]"></i> Performance
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-clipboard-check w-5 mr-3 text-[#4361ee]"></i> Attendance
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Notices</a>
+                    <a href="contact.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Contact Us</a>
+                </nav>
+
+                <!-- Header Actions (Desktop) -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <!-- Search Box with Popup -->
+                    <div class="relative" id="desktopSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="desktopSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-48 text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="desktopSearchResults" class="search-results"></div>
+                    </div>
+                    
+                    <!-- Login Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-full font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center border border-gray-300">
+                            Login <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full right-0 w-48 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="student-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login
+                            </a>
+                            <a href="admin-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-bars text-2xl text-gray-900"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="lg:hidden absolute top-full left-0 w-full bg-white shadow-xl transform transition-all duration-300 -translate-y-full opacity-0 pointer-events-none">
+            <div class="container mx-auto px-4 py-6">
+                <div class="space-y-1">
+                    <a href="about.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">About Us</a>
+                    <a href="academic.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Academics</a>
+                    <a href="department.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Departments</a>
+
+                    <!-- Mobile Students Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Students <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">All Students</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Performance</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Attendance</a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Notices</a>
+                    <a href="contact.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Contact Us</a>
+                </div>
+
+                <!-- Mobile Header Actions -->
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <!-- Mobile Search (hidden by default, can be added if needed) -->
+                    <div class="relative mb-4" id="mobileSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="mobileSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-full text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="mobileSearchResults" class="search-results"></div>
+                    </div>
+                    <!-- Mobile Login Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium bg-gray-100 text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Login <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="student-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login</a>
+                            <a href="admin-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Academics Hero Section -->
+    <section class="academic-hero">
+        <div class="container">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text font-heading">Academic Excellence</h1>
+            <p>Comprehensive academic programs designed to empower students with cutting-edge knowledge, practical
+                skills, and industry-relevant expertise for successful careers in technology and innovation.</p>
+            <button class="btn btn-primary">
+                <i class="fas fa-download mr-2"></i> Download Academic Calendar
+            </button>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <span class="stat-number">20+</span>
+                    <span class="stat-label">Academic Programs</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <span class="stat-number">150+</span>
+                    <span class="stat-label">Expert Faculty</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Courses Offered</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <span class="stat-number">94%</span>
+                    <span class="stat-label">Pass Rate</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section class="programs-section">
+        <div class="container">
+            <h2 class="section-title">Academic Programs</h2>
+            <p class="section-subtitle">Comprehensive technology-focused programs designed for industry readiness and
+                innovation</p>
+
+            <div class="programs-grid">
+                <!-- Computer Science Program -->
+                <div class="program-card">
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3 class="program-title">Computer Science</h3>
+                        <p>Diploma in Engineering</p>
+                    </div>
+                    <div class="program-body">
+                        <p class="text-gray-600 mb-4">Comprehensive program covering programming, software development,
+                            and computer systems.</p>
+                        <ul class="program-details">
+                            <li><i class="fas fa-clock"></i> Duration: 4 Years</li>
+                            <li><i class="fas fa-book"></i> Credits: 160</li>
+                            <li><i class="fas fa-users"></i> Seats: 120 per batch</li>
+                            <li><i class="fas fa-chart-line"></i> Placement: 95%</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">
+                            View Details <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Civil Technology Program -->
+                <div class="program-card">
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3 class="program-title">Civil Technology</h3>
+                        <p>Diploma in Engineering</p>
+                    </div>
+                    <div class="program-body">
+                        <p class="text-gray-600 mb-4">Infrastructure development, construction management, and
+                            structural engineering.</p>
+                        <ul class="program-details">
+                            <li><i class="fas fa-clock"></i> Duration: 4 Years</li>
+                            <li><i class="fas fa-book"></i> Credits: 155</li>
+                            <li><i class="fas fa-users"></i> Seats: 100 per batch</li>
+                            <li><i class="fas fa-chart-line"></i> Placement: 92%</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">
+                            View Details <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Electrical Technology Program -->
+                <div class="program-card">
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3 class="program-title">Electrical Technology</h3>
+                        <p>Diploma in Engineering</p>
+                    </div>
+                    <div class="program-body">
+                        <p class="text-gray-600 mb-4">Power systems, electrical machines, and renewable energy
+                            technologies.</p>
+                        <ul class="program-details">
+                            <li><i class="fas fa-clock"></i> Duration: 4 Years</li>
+                            <li><i class="fas fa-book"></i> Credits: 158</li>
+                            <li><i class="fas fa-users"></i> Seats: 90 per batch</li>
+                            <li><i class="fas fa-chart-line"></i> Placement: 90%</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">
+                            View Details <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Electronics Technology Program -->
+                <div class="program-card">
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3 class="program-title">Electronics Technology</h3>
+                        <p>Diploma in Engineering</p>
+                    </div>
+                    <div class="program-body">
+                        <p class="text-gray-600 mb-4">Comprehensive program covering programming, software development,
+                            and computer systems.</p>
+                        <ul class="program-details">
+                            <li><i class="fas fa-clock"></i> Duration: 4 Years</li>
+                            <li><i class="fas fa-book"></i> Credits: 160</li>
+                            <li><i class="fas fa-users"></i> Seats: 120 per batch</li>
+                            <li><i class="fas fa-chart-line"></i> Placement: 95%</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">
+                            View Details <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mechanical Technology Program -->
+                <div class="program-card">
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3 class="program-title">Mechanical Technology</h3>
+                        <p>Diploma in Engineering</p>
+                    </div>
+                    <div class="program-body">
+                        <p class="text-gray-600 mb-4">Infrastructure development, construction management, and
+                            structural engineering.</p>
+                        <ul class="program-details">
+                            <li><i class="fas fa-clock"></i> Duration: 4 Years</li>
+                            <li><i class="fas fa-book"></i> Credits: 155</li>
+                            <li><i class="fas fa-users"></i> Seats: 100 per batch</li>
+                            <li><i class="fas fa-chart-line"></i> Placement: 92%</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">
+                            View Details <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Power Technology Program -->
+                <div class="program-card">
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3 class="program-title">Power Technology</h3>
+                        <p>Diploma in Engineering</p>
+                    </div>
+                    <div class="program-body">
+                        <p class="text-gray-600 mb-4">Power systems, electrical machines, and renewable energy
+                            technologies.</p>
+                        <ul class="program-details">
+                            <li><i class="fas fa-clock"></i> Duration: 4 Years</li>
+                            <li><i class="fas fa-book"></i> Credits: 158</li>
+                            <li><i class="fas fa-users"></i> Seats: 90 per batch</li>
+                            <li><i class="fas fa-chart-line"></i> Placement: 90%</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">
+                            View Details <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Electromedical Technology Program -->
+                <div class="program-card">
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3 class="program-title">Electromedical Technology</h3>
+                        <p>Diploma in Engineering</p>
+                    </div>
+                    <div class="program-body">
+                        <p class="text-gray-600 mb-4">Infrastructure development, construction management, and
+                            structural engineering.</p>
+                        <ul class="program-details">
+                            <li><i class="fas fa-clock"></i> Duration: 4 Years</li>
+                            <li><i class="fas fa-book"></i> Credits: 155</li>
+                            <li><i class="fas fa-users"></i> Seats: 100 per batch</li>
+                            <li><i class="fas fa-chart-line"></i> Placement: 92%</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">
+                            View Details <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Torisum Technology Program -->
+                <div class="program-card">
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3 class="program-title">Torisum Technology</h3>
+                        <p>Diploma in Engineering</p>
+                    </div>
+                    <div class="program-body">
+                        <p class="text-gray-600 mb-4">Power systems, electrical machines, and renewable energy
+                            technologies.</p>
+                        <ul class="program-details">
+                            <li><i class="fas fa-clock"></i> Duration: 4 Years</li>
+                            <li><i class="fas fa-book"></i> Credits: 158</li>
+                            <li><i class="fas fa-users"></i> Seats: 90 per batch</li>
+                            <li><i class="fas fa-chart-line"></i> Placement: 90%</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">
+                            View Details <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academic Calendar Section -->
+    <section class="calendar-section">
+        <div class="container">
+            <h2 class="section-title">Academic Calendar 2024</h2>
+            <p class="section-subtitle">Important dates and events for the current academic year</p>
+
+            <div class="calendar-grid">
+                <!-- Spring Semester -->
+                <div class="calendar-card">
+                    <div class="calendar-header">
+                        <div class="calendar-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3 class="calendar-title">Spring Semester 2024</h3>
+                    </div>
+                    <ul class="calendar-list">
+                        <li>
+                            <span class="event-name">Classes Begin</span>
+                            <span class="event-date">Jan 15</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Mid-Term Exams</span>
+                            <span class="event-date">Mar 10-20</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Project Submission</span>
+                            <span class="event-date">Apr 15</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Final Exams</span>
+                            <span class="event-date">May 10-25</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Results Published</span>
+                            <span class="event-date">Jun 15</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Fall Semester -->
+                <div class="calendar-card">
+                    <div class="calendar-header">
+                        <div class="calendar-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3 class="calendar-title">Fall Semester 2024</h3>
+                    </div>
+                    <ul class="calendar-list">
+                        <li>
+                            <span class="event-name">Classes Begin</span>
+                            <span class="event-date">Jul 1</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Mid-Term Exams</span>
+                            <span class="event-date">Sep 5-15</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Industrial Visit</span>
+                            <span class="event-date">Oct 10</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Final Exams</span>
+                            <span class="event-date">Nov 15-30</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Winter Vacation</span>
+                            <span class="event-date">Dec 20</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Important Events -->
+                <div class="calendar-card">
+                    <div class="calendar-header">
+                        <div class="calendar-icon">
+                            <i class="fas fa-calendar-star"></i>
+                        </div>
+                        <h3 class="calendar-title">Important Events</h3>
+                    </div>
+                    <ul class="calendar-list">
+                        <li>
+                            <span class="event-name">Orientation Program</span>
+                            <span class="event-date">Jan 10</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Tech Fest 2024</span>
+                            <span class="event-date">Mar 25-27</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Career Fair</span>
+                            <span class="event-date">Apr 5</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Cultural Festival</span>
+                            <span class="event-date">Sep 20-22</span>
+                        </li>
+                        <li>
+                            <span class="event-name">Convocation</span>
+                            <span class="event-date">Dec 15</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+    <!-- Resources Section -->
+    <section class="resources-section">
+        <div class="container">
+            <h2 class="section-title">Academic Resources</h2>
+            <p class="section-subtitle">Comprehensive resources to support your academic journey</p>
+
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="resource-title">Digital Library</h3>
+                    <p class="resource-desc">Access 50,000+ e-books, journals, and research papers</p>
+                    <button class="btn btn-primary">Explore Library</button>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3 class="resource-title">Laboratories</h3>
+                    <p class="resource-desc">State-of-the-art labs with modern equipment</p>
+                    <button class="btn btn-primary">View Labs</button>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3 class="resource-title">E-Learning Portal</h3>
+                    <p class="resource-desc">Online courses, lectures, and study materials</p>
+                    <button class="btn btn-primary">Access Portal</button>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="resource-title">Research Center</h3>
+                    <p class="resource-desc">Innovation and research opportunities</p>
+                    <button class="btn btn-primary">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bg-[#1d3557] text-white py-16">
+        <div class="container text-center">
+            <h2 class="text-3xl font-heading mb-4">Ready to Start Your Academic Journey?</h2>
+            <p class="text-gray-300 mb-8 max-w-2xl mx-auto">Join thousands of students who have transformed their
+                careers through our comprehensive academic programs.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="btn bg-white text-[#1d3557] hover:bg-gray-100">
+                    <i class="fas fa-file-alt mr-2"></i> Download Prospectus
+                </button>
+                <button class="btn bg-[#4361ee] text-white hover:bg-[#3a56d4]">
+                    <i class="fas fa-user-plus mr-2"></i> Apply Now
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1d3557] text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center text-2xl font-bold mb-4">
+                        <i class="fas fa-graduation-cap text-[#4361ee] mr-2"></i>
+                        <span>Student<span class="text-[#4361ee]">Intel</span></span>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">Advanced student intelligence management platform for modern educational institutions.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Products</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Student Analytics</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Attendance System</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Gradebook</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Communication Hub</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Parent Portal</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Documentation</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Tutorials</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Blog</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Case Studies</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Support Center</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> About Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Careers</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Contact</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Partners</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-300">
+                <p>&copy; 2023 Student Intel Management. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+        let isMenuOpen = false;
+
+        function openMobileMenu() {
+            isMenuOpen = true;
+            mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenuButton.innerHTML = '<i class="fas fa-times text-2xl text-gray-900"></i>';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            isMenuOpen = false;
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars text-2xl text-gray-900"></i>';
+            document.body.style.overflow = '';
+
+            document.querySelectorAll('.mobile-dropdown-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.mobile-dropdown-toggle i').forEach(icon => {
+                icon.classList.remove('rotate-180');
+            });
+        }
+
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isMenuOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        mobileDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+
+                mobileDropdownToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.add('hidden');
+                        otherToggle.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) {
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        // Sticky Header
+        const header = document.getElementById('mainHeader');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('shadow-lg', 'bg-white/98');
+
+                if (window.scrollY > lastScrollY && window.scrollY > 200 && !isMenuOpen) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+            } else {
+                header.classList.remove('shadow-lg', 'bg-white/98');
+                header.style.transform = 'translateY(0)';
+            }
+
+            lastScrollY = window.scrollY;
+        });
+    </script>
+</body>
+
+</html>

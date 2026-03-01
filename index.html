@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Intel | Advanced Student Management</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+        
+         /* ==== PRESERVED ORIGINAL STYLES WITH ENHANCEMENTS ==== */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #e63946;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
+            --gradient-accent: linear-gradient(135deg, #4cc9f0, #4361ee);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04);
+            --border-radius: 12px;
+            --border-radius-lg: 20px;
+            --transition: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+            --font-primary: 'Poppins', sans-serif;
+            --font-heading: 'Orbitron', sans-serif;
+        }
+
+        /* Preserve only essential custom styles (animations, fonts, base) */
+        body {
+            font-family: 'Poppins', sans-serif;
+            padding-top: 80px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        /* For search results */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            margin-top: 0.5rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item:hover {
+            background: #e9ecef;
+        }
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-content {
+                max-width: 100%;
+                margin-bottom: 3rem;
+            }
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            .hero-visual {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .floating-card {
+                position: relative;
+                margin-bottom: 1.5rem;
+                width: 100% !important;
+                height: auto !important;
+                animation: none;
+            }
+            .card-1, .card-2, .card-3 {
+                position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
+                bottom: auto;
+            }
+            .cta-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            .footer-bottom-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            .section-title::after {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc] text-[#1d3557] antialiased">
+
+    <!-- Header (fully Tailwind) -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300" id="mainHeader">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a class="flex items-center" href="#">
+                    <i class="fas fa-graduation-cap text-2xl text-[#4361ee] mr-2"></i>
+                    <span class="text-2xl font-bold text-gray-900">
+                        Student<span class="text-[#4361ee]">Intel</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="about.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">About Us</a>
+                    <a href="academic.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Academics</a>
+                    <a href="department.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Departments</a>
+                    
+                    <!-- Students Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center">
+                            Students <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full left-0 w-56 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> All Students
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-chart-line w-5 mr-3 text-[#4361ee]"></i> Performance
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-clipboard-check w-5 mr-3 text-[#4361ee]"></i> Attendance
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Notices</a>
+                    <a href="contact.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Contact Us</a>
+                </nav>
+
+                <!-- Header Actions (Desktop) -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <!-- Search Box with Popup -->
+                    <div class="relative" id="desktopSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="desktopSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-48 text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="desktopSearchResults" class="search-results"></div>
+                    </div>
+                    
+                    <!-- Login Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-full font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center border border-gray-300">
+                            Login <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full right-0 w-48 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="student-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login
+                            </a>
+                            <a href="admin-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-bars text-2xl text-gray-900"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="lg:hidden absolute top-full left-0 w-full bg-white shadow-xl transform transition-all duration-300 -translate-y-full opacity-0 pointer-events-none">
+            <div class="container mx-auto px-4 py-6">
+                <div class="space-y-1">
+                    <a href="about.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">About Us</a>
+                    <a href="academic.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Academics</a>
+                    <a href="department.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Departments</a>
+
+                    <!-- Mobile Students Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Students <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">All Students</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Performance</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Attendance</a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Notices</a>
+                    <a href="contact.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Contact Us</a>
+                </div>
+
+                <!-- Mobile Header Actions -->
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <!-- Mobile Search (hidden by default, can be added if needed) -->
+                    <div class="relative mb-4" id="mobileSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="mobileSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-full text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="mobileSearchResults" class="search-results"></div>
+                    </div>
+                    <!-- Mobile Login Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium bg-gray-100 text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Login <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="student-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login</a>
+                            <a href="admin-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section (converted to Tailwind) -->
+    <section class="relative flex flex-col lg:flex-row items-center min-h-[calc(100vh-300px)] max-w-7xl mx-auto px-8 py-12 lg:py-0 overflow-hidden">
+    <!-- Background blobs -->
+    <div class="absolute top-[-50%] right-[-20%] w-[800px] h-[800px] bg-gradient-to-br from-[#4361ee] to-[#3a0ca3] rounded-full opacity-5 -z-10"></div>
+    <div class="absolute bottom-[-30%] left-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-[#7209b7] to-[#f72585] rounded-full opacity-5 -z-10"></div>
+
+    <div class="flex-1 max-w-2xl text-center lg:text-left">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] bg-clip-text text-transparent leading-tight">
+            Advanced Student Intelligence Management
+        </h1>
+        <p class="text-xl text-gray-600 mb-10 leading-relaxed">
+            Empowering educational institutions with cutting-edge analytics, predictive insights, and comprehensive student management tools.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <button class="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                Admit Here Now
+            </button>
+            <button class="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-[#7209b7] to-[#f72585] shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                Learn More
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-1 relative h-[400px] lg:h-[500px] mt-12 lg:mt-0 hidden lg:block">
+        <!-- Floating Cards -->
+        <div class="absolute top-[10%] left-[10%] w-44 h-44 bg-white rounded-2xl shadow-xl p-5 flex flex-col items-center justify-center text-center animate-float hover:-translate-y-2 transition-transform">
+            <i class="fas fa-chart-line text-4xl mb-3 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] bg-clip-text text-transparent"></i>
+            <h3 class="font-orbitron font-semibold">Performance Analytics</h3>
+        </div>
+        <div class="absolute top-[50%] right-[15%] w-52 h-52 bg-white rounded-2xl shadow-xl p-5 flex flex-col items-center justify-center text-center animate-float [animation-delay:2s] hover:-translate-y-2 transition-transform">
+            <i class="fas fa-user-graduate text-4xl mb-3 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] bg-clip-text text-transparent"></i>
+            <h3 class="font-orbitron font-semibold">Student Profiles</h3>
+        </div>
+        <div class="absolute bottom-[10%] left-[20%] w-40 h-40 bg-white rounded-2xl shadow-xl p-5 flex flex-col items-center justify-center text-center animate-float [animation-delay:4s] hover:-translate-y-2 transition-transform">
+            <i class="fas fa-calendar-alt text-4xl mb-3 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] bg-clip-text text-transparent"></i>
+            <h3 class="font-orbitron font-semibold">Smart Scheduling</h3>
+        </div>
+    </div>
+</section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-center text-4xl font-bold mb-2 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-gradient-to-r after:from-[#4361ee] after:to-[#3a0ca3] after:rounded">Advanced Management Features</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">Comprehensive tools designed for modern educational institutions</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Growth Analytics</h3>
+                    <p class="text-gray-600 mb-5">Predict student performance and identify at-risk students with our advanced machine learning algorithms.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Predictive Modeling</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Pattern Recognition</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Trend Analysis</span>
+                    </div>
+                </div>
+                <!-- Feature Card 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Performance Dashboard</h3>
+                    <p class="text-gray-600 mb-5">Comprehensive visualizations of student data with customizable reports and real-time updates.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Custom Reports</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Real-time Data</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Export Options</span>
+                    </div>
+                </div>
+                <!-- Feature Card 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Collaboration Hub</h3>
+                    <p class="text-gray-600 mb-5">Foster communication between students, teachers, and parents with our integrated platform.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Group Messaging</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Parent Portal</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Announcements</span>
+                    </div>
+                </div>
+                <!-- Feature Card 4 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Assignment Manager</h3>
+                    <p class="text-gray-600 mb-5">Streamline assignment creation, distribution, and grading with automated workflows.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Auto-grading</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Plagiarism Check</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Deadline Tracking</span>
+                    </div>
+                </div>
+                <!-- Feature Card 5 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Attendance System</h3>
+                    <p class="text-gray-600 mb-5">Track and analyze student attendance with automated notifications and reporting.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Automated Alerts</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Pattern Analysis</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Regulatory Compliance</span>
+                    </div>
+                </div>
+                <!-- Feature Card 6 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Security & Privacy</h3>
+                    <p class="text-gray-600 mb-5">Enterprise-grade security with role-based access control and data encryption.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Data Encryption</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Access Controls</span>
+                        <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">Audit Logs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-24 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] text-white relative overflow-hidden">
+		<div class="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1000 1000%22 opacity=%220.1%22><polygon fill=%22white%22 points=%220,1000 1000,0 1000,1000%22/></svg>')] bg-cover bg-no-repeat bg-center"></div>        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="text-center text-4xl font-bold mb-12 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-white/70 after:rounded">Our Education Management</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2">
+                    <i class="fas fa-university text-5xl mb-6 opacity-90"></i>
+                    <div class="stat-data">
+                        <span class="text-5xl font-bold font-orbitron block mb-2">1,250+</span>
+                        <span class="text-xl opacity-90">Progress</span>
+                    </div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2">
+                    <i class="fas fa-user-graduate text-5xl mb-6 opacity-90"></i>
+                    <div class="stat-data">
+                        <span class="text-5xl font-bold font-orbitron block mb-2">500K+</span>
+                        <span class="text-xl opacity-90">Students</span>
+                    </div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2">
+                    <i class="fas fa-chart-line text-5xl mb-6 opacity-90"></i>
+                    <div class="stat-data">
+                        <span class="text-5xl font-bold font-orbitron block mb-2">94%</span>
+                        <span class="text-xl opacity-90">Performance Improvement</span>
+                    </div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2">
+                    <i class="fas fa-clock text-5xl mb-6 opacity-90"></i>
+                    <div class="stat-data">
+                        <span class="text-5xl font-bold font-orbitron block mb-2">65%</span>
+                        <span class="text-xl opacity-90">Time Saved</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-center text-4xl font-bold mb-2 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-gradient-to-r after:from-[#4361ee] after:to-[#3a0ca3] after:rounded">What Educators Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+                <!-- Testimonial 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative">
+                    <div class="absolute top-5 right-8 text-7xl text-gray-200 font-serif">"</div>
+                    <div class="relative z-10 mb-6">
+                        <p class="text-gray-700 italic leading-relaxed">"Student Intel has revolutionized how we track student progress. The predictive analytics helped us identify at-risk students weeks before they would have fallen behind."</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <img src="https://www.clipartmax.com/png/small/144-1442578_flat-person-icon-download-dummy-man.png" alt="Dr. Johnson" class="w-14 h-14 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-lg">Our Principal</h4>
+                            <p class="text-gray-500 text-sm">Principal of Barishal Polytechnic Institute</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative">
+                    <div class="absolute top-5 right-8 text-7xl text-gray-200 font-serif">"</div>
+                    <div class="relative z-10 mb-6">
+                        <p class="text-gray-700 italic leading-relaxed">"The communication tools have dramatically improved parent engagement. We've seen attendance at parent-teacher conferences increase by 40% since implementation."</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <img src="https://www.clipartmax.com/png/small/144-1442578_flat-person-icon-download-dummy-man.png" alt="Sarah Williams" class="w-14 h-14 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-lg">Our Vice Principal</h4>
+                            <p class="text-gray-500 text-sm">Vice Principal of Barishal Polytechnic Institute</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative">
+                    <div class="absolute top-5 right-8 text-7xl text-gray-200 font-serif">"</div>
+                    <div class="relative z-10 mb-6">
+                        <p class="text-gray-700 italic leading-relaxed">"As a teacher, the time saved on administrative tasks is incredible. I can now focus more on actual teaching and student interaction rather than paperwork."</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <img src="https://www.clipartmax.com/png/small/144-1442578_flat-person-icon-download-dummy-man.png" alt="Robert Chen" class="w-14 h-14 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-lg">Sakil Al Masum</h4>
+                            <p class="text-gray-500 text-sm">CI, Department Head of Computer Science</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Students Section -->
+    <section class="py-24 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-center text-4xl font-bold mb-2 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-gradient-to-r after:from-[#4361ee] after:to-[#3a0ca3] after:rounded">Top 10 Students of the Institute</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">Exceptional performers who have set benchmarks in academics and co-curricular activities</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6" id="topStudentsGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 bg-gradient-to-r from-[#7209b7] to-[#f72585] text-white text-center relative overflow-hidden">
+		<div class="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1000 1000%22 opacity=%220.1%22><circle fill=%22white%22 cx=%22500%22 cy=%22500%22 r=%22400%22/></svg>')] bg-cover bg-no-repeat bg-center"></div>        <div class="container mx-auto px-4 relative z-10 max-w-3xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Transform Your Institution?</h2>
+            <p class="text-xl opacity-90 mb-10">Join thousands of educational institutions using Student Intel to enhance student outcomes and streamline operations.</p>
+            <div class="cta-actions">
+                <button class="btn btn-primary">Get Started Today</button>
+                <button class="btn btn-secondary">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1d3557] text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center text-2xl font-bold mb-4">
+                        <i class="fas fa-graduation-cap text-[#4361ee] mr-2"></i>
+                        <span>Student<span class="text-[#4361ee]">Intel</span></span>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">Advanced student intelligence management platform for modern educational institutions.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Products</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Student Analytics</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Attendance System</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Gradebook</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Communication Hub</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Parent Portal</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Documentation</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Tutorials</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Blog</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Case Studies</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Support Center</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> About Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Careers</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Contact</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Partners</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-300">
+                <p>&copy; 2023 Student Intel Management. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Student Data (Top 10 + extras for search)
+        const students = [
+            { name: "Rafiq Ahmed", roll: "2024001", dept: "Computer Science", rank: 1 },
+            { name: "Sharmin Akter", roll: "2024002", dept: "Computer Science", rank: 2 },
+            { name: "Hasan Mahmud", roll: "2024003", dept: "Electrical Technology", rank: 3 },
+            { name: "Nusrat Jahan", roll: "2024004", dept: "Electronics", rank: 4 },
+            { name: "Tanvir Hasan", roll: "2024005", dept: "Civil Technology", rank: 5 },
+            { name: "Sumaiya Khatun", roll: "2024006", dept: "Power Technology", rank: 6 },
+            { name: "Mehedi Hasan", roll: "2024007", dept: "Computer Science", rank: 7 },
+            { name: "Jannatul Ferdous", roll: "2024008", dept: "Electronics", rank: 8 },
+            { name: "Shakib Al Hasan", roll: "2024009", dept: "Electrical Technology", rank: 9 },
+            { name: "Mim Akhter", roll: "2024010", dept: "Civil Technology", rank: 10 },
+            { name: "Abdur Rahman", roll: "2024011", dept: "Power Technology", rank: 11 },
+            { name: "Fatema Tuz Zohra", roll: "2024012", dept: "Computer Science", rank: 12 }
+        ];
+
+        // Populate Top Students Grid
+        const topStudentsGrid = document.getElementById('topStudentsGrid');
+        if (topStudentsGrid) {
+            const top10 = students.filter(s => s.rank <= 10);
+            top10.sort((a, b) => a.rank - b.rank).forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center relative';
+                card.innerHTML = `
+                    <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] text-white flex items-center justify-center font-bold text-sm">${student.rank}</div>
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-white text-4xl border-4 border-white shadow-md">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">${student.name}</h3>
+                    <div class="text-gray-500 text-sm mb-2">Roll: ${student.roll}</div>
+                    <div class="inline-block bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium">${student.dept}</div>
+                `;
+                topStudentsGrid.appendChild(card);
+            });
+        }
+
+        // Search Functionality
+        function initSearch(inputId, resultsId, containerId) {
+            const input = document.getElementById(inputId);
+            const resultsDiv = document.getElementById(resultsId);
+            const container = document.getElementById(containerId);
+
+            if (!input || !resultsDiv) return;
+
+            document.addEventListener('click', (e) => {
+                if (container && !container.contains(e.target)) {
+                    resultsDiv.classList.remove('show');
+                }
+            });
+
+            input.addEventListener('input', function() {
+                const query = this.value.trim().toLowerCase();
+                if (query === '') {
+                    resultsDiv.classList.remove('show');
+                    return;
+                }
+
+                const filtered = students.filter(s => 
+                    s.name.toLowerCase().includes(query) || 
+                    s.roll.toLowerCase().includes(query)
+                );
+
+                if (filtered.length === 0) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-gray-500 text-center">No students found</div>';
+                } else {
+                    resultsDiv.innerHTML = filtered.map(s => `
+                        <div class="search-result-item" data-name="${s.name}" data-roll="${s.roll}">
+                            <span class="font-semibold text-gray-800">${s.name}</span>
+                            <span class="text-sm text-gray-500 ml-2">${s.roll}</span>
+                            <span class="text-xs bg-[#4361ee] text-white px-2 py-0.5 rounded-full ml-2">${s.dept}</span>
+                        </div>
+                    `).join('');
+                }
+
+                resultsDiv.classList.add('show');
+
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const name = this.dataset.name;
+                        const roll = this.dataset.roll;
+                        input.value = `${name} (${roll})`;
+                        resultsDiv.classList.remove('show');
+                    });
+                });
+            });
+        }
+
+        initSearch('desktopSearchInput', 'desktopSearchResults', 'desktopSearchContainer');
+        initSearch('mobileSearchInput', 'mobileSearchResults', 'mobileSearchContainer');
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+        let isMenuOpen = false;
+
+        function openMobileMenu() {
+            isMenuOpen = true;
+            mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenuButton.innerHTML = '<i class="fas fa-times text-2xl text-gray-900"></i>';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            isMenuOpen = false;
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars text-2xl text-gray-900"></i>';
+            document.body.style.overflow = '';
+
+            document.querySelectorAll('.mobile-dropdown-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.mobile-dropdown-toggle i').forEach(icon => {
+                icon.classList.remove('rotate-180');
+            });
+        }
+
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isMenuOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        mobileDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+
+                mobileDropdownToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.add('hidden');
+                        otherToggle.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) {
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // Sticky Header
+        const header = document.getElementById('mainHeader');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('shadow-lg', 'bg-white/98');
+
+                if (window.scrollY > lastScrollY && window.scrollY > 200 && !isMenuOpen) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+            } else {
+                header.classList.remove('shadow-lg', 'bg-white/98');
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+        });
+    </script>
+</body>
+</html>

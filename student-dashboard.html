@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Student Dashboard - EduCore</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --normal-text: #4b5563;
+            --bold-text: #000000;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--normal-text);
+            background-color: #fcfcfc;
+        }
+
+        .text-normal {
+            color: var(--normal-text);
+        }
+
+        .text-bold {
+            color: var(--bold-text);
+            font-weight: 700;
+        }
+
+        /* Primary Button */
+        .btn-primary {
+            background-color: black;
+            color: white;
+            border: 1px solid black;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: white;
+            color: black;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Secondary Button */
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+            transition: all 0.4s ease;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover {
+            background-color: white;
+            color: black;
+        }
+
+        /* Modern Cards */
+        .glass-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 24px;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Sidebar Styling */
+        .sidebar-item {
+            transition: all 0.3s ease;
+            color: #9ca3af;
+        }
+
+        .sidebar-item:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-item.active {
+            background-color: white;
+            color: black;
+            font-weight: 700;
+            border-radius: 16px;
+        }
+
+        /* Tab Transitions */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.98) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .notice-hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed inset-y-0 left-0 z-50 w-72 bg-black text-white transform -translate-x-full lg:translate-x-0 transition-transform duration-500 ease-in-out m-4 rounded-[32px] shadow-2xl overflow-hidden">
+        <div class="flex flex-col h-full p-6">
+            <!-- Brand -->
+            <div class="flex items-center gap-3 mb-10 px-2">
+                <div class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center rotate-6">
+                    <i data-lucide="blocks" class="text-black w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-black tracking-tighter">StudentIntel</h2>
+                    <p class="text-[10px] text-gray-500 font-bold tracking-widest uppercase">Student Portal</p>
+                </div>
+            </div>
+
+            <!-- Nav -->
+            <nav class="flex-1 space-y-2">
+                <button onclick="showTab('dashboard')"
+                    class="sidebar-item active w-full flex items-center gap-4 px-5 py-4 rounded-2xl" id="btn-dashboard">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                    <span class="text-sm font-semibold">Dashboard</span>
+                </button>
+                <button onclick="showTab('personal')"
+                    class="sidebar-item w-full flex items-center gap-4 px-5 py-4 rounded-2xl" id="btn-personal">
+                    <i data-lucide="user-circle" class="w-5 h-5"></i>
+                    <span class="text-sm font-semibold">Profile Details</span>
+                </button>
+                <button onclick="showTab('academic')"
+                    class="sidebar-item w-full flex items-center gap-4 px-5 py-4 rounded-2xl" id="btn-academic">
+                    <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                    <span class="text-sm font-semibold">Academic Hub</span>
+                </button>
+                <button onclick="showTab('notice')"
+                    class="sidebar-item w-full flex items-center gap-4 px-5 py-4 rounded-2xl" id="btn-notice">
+                    <i data-lucide="bell-ring" class="w-5 h-5"></i>
+                    <span class="text-sm font-semibold">Notices</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="mt-auto pt-6 border-t border-gray-800 space-y-4">
+                <button class="btn-secondary w-full py-3">Help Center</button>
+                <button id="signOut"
+                    class="w-full flex items-center gap-4 px-5 py-3 rounded-2xl text-red-400 hover:bg-red-500/10 font-bold text-sm transition-all">
+                    <i data-lucide="log-out" class="w-5 h-5"></i> Sign Out
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <main class="flex-1 lg:ml-72 p-6 md:p-10 transition-all duration-300">
+
+        <!-- Top Navigation -->
+        <header class="max-w-7xl mx-auto flex items-center justify-between mb-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-white rounded-2xl shadow-sm">
+                    <i data-lucide="menu" class="text-black"></i>
+                </button>
+                <div>
+                    <h1 class="text-bold text-2xl tracking-tight" id="page-title">Morning, Saykot!</h1>
+                    <p class="text-normal text-sm font-medium">Today is Wednesday, 17th December</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 bg-white p-2 rounded-2xl border border-gray-100 shadow-sm pr-4">
+                <img src="images/Saykot.jpg"
+                    class="w-10 h-10 rounded-xl object-cover ring-2 ring-gray-50">
+                <div class="hidden md:block">
+                    <p class="text-bold text-xs">Saykot</p>
+                    <p class="text-normal text-[10px] font-bold uppercase opacity-60">ID: 743738</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-7xl mx-auto">
+
+            <!-- TAB: Dashboard -->
+            <div id="dashboard" class="tab-content active space-y-8">
+
+                <!-- Ratings Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-card p-6 flex flex-col justify-between h-40">
+                        <div class="flex items-center justify-between">
+                            <div class="p-2 bg-green-50 rounded-lg"><i data-lucide="calendar-check"
+                                    class="text-green-600 w-5 h-5"></i></div>
+                            <span class="text-[10px] font-black text-green-600 bg-green-50 px-2 py-1 rounded-md">+2%
+                                Up</span>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400">Attendance Rating
+                            </p>
+                            <h2 class="text-bold text-3xl">94.8%</h2>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex flex-col justify-between h-40">
+                        <div class="flex items-center justify-between">
+                            <div class="p-2 bg-blue-50 rounded-lg"><i data-lucide="trending-up"
+                                    class="text-blue-600 w-5 h-5"></i></div>
+                            <span class="text-[10px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-md">Top
+                                5%</span>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400">Result Rating</p>
+                            <h2 class="text-bold text-3xl">3.60 <span class="text-sm text-normal">/ 4.0</span></h2>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex flex-col justify-between h-40">
+                        <div class="flex items-center justify-between">
+                            <div class="p-2 bg-orange-50 rounded-lg"><i data-lucide="book-open"
+                                    class="text-orange-600 w-5 h-5"></i></div>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400">Total Credits</p>
+                            <h2 class="text-bold text-3xl">102 <span class="text-sm text-normal">Earned</span></h2>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex flex-col justify-between h-40">
+                        <div class="flex items-center justify-between">
+                            <div class="p-2 bg-purple-50 rounded-lg"><i data-lucide="award"
+                                    class="text-purple-600 w-5 h-5"></i></div>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-bold uppercase tracking-widest text-gray-400">Class Rank</p>
+                            <h2 class="text-bold text-3xl">#04 <span class="text-sm text-normal">Overall</span></h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="glass-card p-8">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-bold text-lg">Result History (GPA Trend)</h3>
+                            <button class="text-xs font-bold text-gray-400 hover:text-black">View Details</button>
+                        </div>
+                        <canvas id="resultChart" height="200"></canvas>
+                    </div>
+                    <div class="glass-card p-8">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-bold text-lg">Monthly Attendance</h3>
+                            <div class="flex gap-2">
+                                <span class="w-3 h-3 bg-black rounded-full"></span>
+                                <span class="text-[10px] font-bold uppercase">Presence %</span>
+                            </div>
+                        </div>
+                        <canvas id="attendanceChart" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Features & Summary -->
+                <div class="glass-card p-8 bg-black text-white relative overflow-hidden">
+                    <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-black mb-4">Semester Project: Hybrid Engine Design</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6">You are currently lead of Group A.
+                                Project milestone #3 is due in 4 days. Please ensure all CAD documentation is uploaded
+                                to the central server before the deadline.</p>
+                            <div class="flex gap-4">
+                                <button class="btn-secondary text-sm px-6 py-2.5">Open Project Hub</button>
+                                <button
+                                    class="bg-white/10 hover:bg-white/20 px-6 py-2.5 rounded-xl font-bold text-sm transition-all">Submit
+                                    Files</button>
+                            </div>
+                        </div>
+                        <div class="hidden md:flex justify-end">
+                            <div
+                                class="p-6 bg-white/10 backdrop-blur-md rounded-[32px] border border-white/10 w-64 text-center">
+                                <i data-lucide="rocket" class="w-12 h-12 mx-auto mb-4 text-white"></i>
+                                <p class="text-sm font-bold">Upcoming Deadline</p>
+                                <p class="text-xs text-gray-400 mt-1">21 Dec, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    <i data-lucide="zap"
+                        class="absolute -right-10 -bottom-10 w-64 h-64 opacity-5 pointer-events-none"></i>
+                </div>
+            </div>
+
+            <!-- TAB: Personal -->
+            <div id="personal" class="tab-content space-y-8">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-bold text-3xl">Profile Overview</h1>
+                    <button class="btn-primary">Update Profile</button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="glass-card p-8 flex flex-col items-center">
+                            <img src="images/Saykot.jpg"
+                                class="w-48 h-48 rounded-[40px] object-cover shadow-2xl mb-6 ring-8 ring-gray-50">
+                            <h2 class="text-bold text-2xl">Saykot</h2>
+                            <p class="text-normal font-medium mb-6">Computer Engineering Student</p>
+                            <div class="w-full pt-6 border-t border-gray-100 flex justify-around">
+                                <div class="text-center">
+                                    <p class="text-bold">20</p>
+                                    <p class="text-[10px] uppercase font-bold text-gray-400">Age</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-bold text-red-600">O+</p>
+                                    <p class="text-[10px] uppercase font-bold text-gray-400">Blood</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-bold">Active</p>
+                                    <p class="text-[10px] uppercase font-bold text-gray-400">Status</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="glass-card p-8">
+                            <h3 class="text-bold text-lg mb-8 border-b pb-4">Personal Details</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="space-y-6">
+                                    <div><label
+                                            class="text-[10px] font-black uppercase tracking-widest text-gray-400">Father's
+                                            Name</label>
+                                        <p class="text-bold">Md Mamun</p>
+                                    </div>
+                                    <div><label
+                                            class="text-[10px] font-black uppercase tracking-widest text-gray-400">Mother's
+                                            Name</label>
+                                        <p class="text-bold">Shoke Akter</p>
+                                    </div>
+                                    <div><label
+                                            class="text-[10px] font-black uppercase tracking-widest text-gray-400">Date
+                                            of Birth</label>
+                                        <p class="text-bold">May 06, 2006</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-6">
+                                    <div><label
+                                            class="text-[10px] font-black uppercase tracking-widest text-gray-400">Nationality</label>
+                                        <p class="text-bold">Bangladeshi</p>
+                                    </div>
+                                    <div><label
+                                            class="text-[10px] font-black uppercase tracking-widest text-gray-400">Identification</label>
+                                        <p class="text-bold">Saykot-743738</p>
+                                    </div>
+                                    <div><label
+                                            class="text-[10px] font-black uppercase tracking-widest text-gray-400">Religion</label>
+                                        <p class="text-bold">Muslim</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-8">
+                            <h3 class="text-bold text-lg mb-8 border-b pb-4">Contact Info</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="flex gap-4">
+                                    <div
+                                        class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-black">
+                                        <i data-lucide="mail" class="w-5 h-5"></i></div>
+                                    <div>
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase">Email</p>
+                                        <p class="text-bold text-sm">rksaikatkhan999@gmail.com</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div
+                                        class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-black">
+                                        <i data-lucide="phone" class="w-5 h-5"></i></div>
+                                    <div>
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase">Phone</p>
+                                        <p class="text-bold text-sm">+8801981736667</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Academic -->
+            <div id="academic" class="tab-content space-y-8">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-bold text-3xl">Academic Journey</h1>
+                    <button class="btn-primary">Download Transcript</button>
+                </div>
+
+                <!-- Detailed Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="glass-card p-8 lg:col-span-1">
+                        <h3 class="text-bold text-lg mb-6">Registration Data</h3>
+                        <div class="space-y-6">
+                            <div class="p-4 bg-gray-50 rounded-2xl flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-gray-400 uppercase">System ID</span>
+                                <span class="text-bold">743738</span>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-2xl flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-gray-400 uppercase">Registration</span>
+                                <span class="text-bold">1502269452</span>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-2xl flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-gray-400 uppercase">Batch / Session</span>
+                                <span class="text-bold">2022-2023</span>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-2xl flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-gray-400 uppercase">Shift</span>
+                                <span class="text-bold">Day</span>
+                            </div>
+                        </div>
+
+                        <!-- Credit Distribution Graph -->
+                        <div class="mt-10">
+                            <h4 class="text-bold text-sm mb-4">Credit Completion</h4>
+                            <div class="relative w-40 h-40 mx-auto">
+                                <canvas id="creditChart"></canvas>
+                                <div
+                                    class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                    <span class="text-2xl font-black">72%</span>
+                                    <span class="text-[8px] uppercase font-bold text-gray-400">Progress</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 space-y-8">
+                        <!-- Course List -->
+                        <div class="glass-card overflow-hidden p-0">
+                            <div class="p-6 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
+                                <h3 class="text-bold">Current Semester Courses (6th)</h3>
+                                <span
+                                    class="text-[10px] font-black text-black bg-white px-3 py-1 rounded-full shadow-sm">6
+                                    Total</span>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <div
+                                    class="flex items-center justify-between p-4 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all group">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold">
+                                            ME</div>
+                                        <div>
+                                            <p class="text-bold text-sm">Database Management System</p>
+                                            <p class="text-[10px] text-gray-400 font-bold uppercase">Code: 28561 |
+                                                Credits: 3.0</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs font-bold text-green-600">A+ Performance</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex items-center justify-between p-4 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all group">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold">
+                                            ME</div>
+                                        <div>
+                                            <p class="text-bold text-sm">Sensor and IoT System</p>
+                                            <p class="text-[10px] text-gray-400 font-bold uppercase">Code: 28563 |
+                                                Credits: 3.0</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs font-bold text-blue-600">A Performance</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex items-center justify-between p-4 border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all group">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold">
+                                            MA</div>
+                                        <div>
+                                            <p class="text-bold text-sm">Computer Networking</p>
+                                            <p class="text-[10px] text-gray-400 font-bold uppercase">Code: 28562 |
+                                                Credits: 3.0</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs font-bold text-black">A- Performance</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Previous Records -->
+                        <div class="glass-card p-0 overflow-hidden">
+                            <div class="p-6 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
+                                <h3 class="text-bold">Academic Performance History</h3>
+                            </div>
+                            <table class="w-full text-left text-sm">
+                                <thead>
+                                    <tr class="bg-white border-b border-gray-50">
+                                        <th class="p-6 text-[10px] uppercase font-black text-gray-400">Semester</th>
+                                        <th class="p-6 text-[10px] uppercase font-black text-gray-400">GPA</th>
+                                        <th class="p-6 text-[10px] uppercase font-black text-gray-400">Credits</th>
+                                        <th class="p-6 text-[10px] uppercase font-black text-gray-400 text-right">Status
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50">
+                                    <tr class="hover:bg-gray-50 transition-all">
+                                        <td class="p-6 font-bold">1st Semester (Passed)</td>
+                                        <td class="p-6 text-normal">3.58</td>
+                                        <td class="p-6 text-normal">18.0</td>
+                                        <td class="p-6 text-right"><span
+                                                class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-black uppercase">Passed</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-all">
+                                        <td class="p-6 font-bold">2nd Semester (Passed)</td>
+                                        <td class="p-6 text-normal">3.51</td>
+                                        <td class="p-6 text-normal">18.0</td>
+                                        <td class="p-6 text-right"><span
+                                                class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-black uppercase">Passed</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-all">
+                                        <td class="p-6 font-bold">3rd Semester (Passed)</td>
+                                        <td class="p-6 text-normal">3.57</td>
+                                        <td class="p-6 text-normal">18.0</td>
+                                        <td class="p-6 text-right"><span
+                                                class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-black uppercase">Passed</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-all">
+                                        <td class="p-6 font-bold">4th Semester (Passed)</td>
+                                        <td class="p-6 text-normal">3.51</td>
+                                        <td class="p-6 text-normal">18.0</td>
+                                        <td class="p-6 text-right"><span
+                                                class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-black uppercase">Passed</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-all">
+                                        <td class="p-6 font-bold">5th Semester (Passed)</td>
+                                        <td class="p-6 text-normal">3.78</td>
+                                        <td class="p-6 text-normal">18.0</td>
+                                        <td class="p-6 text-right"><span
+                                                class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-black uppercase">Passed</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Notice -->
+            <div id="notice" class="tab-content space-y-8">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h1 class="text-bold text-3xl">Campus Newsroom</h1>
+                        <p class="text-normal">Latest updates from the university administration</p>
+                    </div>
+                    <div class="flex p-1 bg-gray-100 rounded-2xl">
+                        <button onclick="filterNotices('all')" id="filter-all"
+                            class="filter-btn px-6 py-2.5 rounded-xl text-xs font-black bg-black text-white shadow-xl transition-all">All</button>
+                        <button onclick="filterNotices('present')" id="filter-present"
+                            class="filter-btn px-6 py-2.5 rounded-xl text-xs font-black text-gray-400 hover:text-black transition-all">Present</button>
+                        <button onclick="filterNotices('upcoming')" id="filter-upcoming"
+                            class="filter-btn px-6 py-2.5 rounded-xl text-xs font-black text-gray-400 hover:text-black transition-all">Upcoming</button>
+                        <button onclick="filterNotices('past')" id="filter-past"
+                            class="filter-btn px-6 py-2.5 rounded-xl text-xs font-black text-gray-400 hover:text-black transition-all">Past</button>
+                    </div>
+                </div>
+
+                <div id="notice-container" class="space-y-4">
+                    <div class="notice-item glass-card p-6 flex flex-col md:flex-row justify-between items-center gap-6 border-l-[12px] border-l-green-500"
+                        data-category="present">
+                        <div class="flex gap-6">
+                            <div
+                                class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
+                                <i data-lucide="check-circle-2" class="w-8 h-8"></i></div>
+                            <div>
+                                <h4 class="text-bold text-xl">Final Exam Schedule Released</h4>
+                                <p class="text-normal text-sm max-w-xl mt-1">Official routine for Winter 2024 is now
+                                    available. Exams start from 15th December.</p>
+                                <div
+                                    class="flex items-center gap-4 mt-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i>
+                                        24 Oct</span>
+                                    <span
+                                        class="flex items-center gap-1 text-green-600 bg-green-50 px-2 py-0.5 rounded">Active
+                                        Now</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-primary">Download PDF</button>
+                    </div>
+
+                    <div class="notice-item glass-card p-6 flex flex-col md:flex-row justify-between items-center gap-6 border-l-[12px] border-l-blue-500"
+                        data-category="upcoming">
+                        <div class="flex gap-6">
+                            <div
+                                class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
+                                <i data-lucide="rocket" class="w-8 h-8"></i></div>
+                            <div>
+                                <h4 class="text-bold text-xl">Annual Tech Fest 2024</h4>
+                                <p class="text-normal text-sm max-w-xl mt-1">Showcase your innovations and compete for
+                                    prizes worth $10,000. Registration opens next week.</p>
+                                <div
+                                    class="flex items-center gap-4 mt-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i>
+                                        05 Nov</span>
+                                    <span class="text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Coming Soon</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-primary">Pre-Register</button>
+                    </div>
+
+                    <div class="notice-item glass-card p-6 opacity-60 flex flex-col md:flex-row justify-between items-center gap-6 border-l-[12px] border-l-gray-300"
+                        data-category="past">
+                        <div class="flex gap-6">
+                            <div
+                                class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-400">
+                                <i data-lucide="archive" class="w-8 h-8"></i></div>
+                            <div>
+                                <h4 class="text-bold text-xl">Lab Maintenance Notice</h4>
+                                <p class="text-normal text-sm max-w-xl mt-1">The main thermodynamics lab was closed for
+                                    technical calibration on 15th September.</p>
+                                <div
+                                    class="flex items-center gap-4 mt-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i>
+                                        15 Sep</span>
+                                    <span class="bg-gray-100 px-2 py-0.5 rounded">Archived</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-primary">View Log</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Footer -->
+            <footer
+                class="mt-20 py-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <h4 class="text-bold text-sm">StudentIntel</h4>
+                    <p class="text-xs text-normal mt-1">V1.0.0 | System operational</p>
+                </div>
+                <div class="flex gap-10">
+                    <a href="#"
+                        class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-black transition-all">Network</a>
+                    <a href="#"
+                        class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-black transition-all">Privacy</a>
+                    <a href="#"
+                        class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-black transition-all">Security</a>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Charts Initialization
+        function initCharts() {
+            // GPA Trend Chart
+            const ctxResult = document.getElementById('resultChart').getContext('2d');
+            new Chart(ctxResult, {
+                type: 'line',
+                data: {
+                    labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+                    datasets: [{
+                        label: 'GPA Score',
+                        data: [3.85, 3.92, 3.78, 3.92],
+                        borderColor: '#000000',
+                        borderWidth: 4,
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: (context) => {
+                            const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 400);
+                            gradient.addColorStop(0, 'rgba(0, 0, 0, 0.05)');
+                            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                            return gradient;
+                        },
+                        pointRadius: 6,
+                        pointBackgroundColor: '#000',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { min: 3, max: 4, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Attendance Chart
+            const ctxAttendance = document.getElementById('attendanceChart').getContext('2d');
+            new Chart(ctxAttendance, {
+                type: 'bar',
+                data: {
+                    labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Presence %',
+                        data: [98, 92, 95, 88, 94],
+                        backgroundColor: '#000000',
+                        borderRadius: 8,
+                        barThickness: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { min: 0, max: 100, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Academic Credit Chart
+            const ctxCredit = document.getElementById('creditChart').getContext('2d');
+            new Chart(ctxCredit, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Earned', 'Remaining'],
+                    datasets: [{
+                        data: [102, 38],
+                        backgroundColor: ['#000000', '#f3f4f6'],
+                        borderWidth: 0,
+                        cutout: '85%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Run charts on load
+        window.onload = initCharts;
+
+        // Tab Switching
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + tabId).classList.add('active');
+
+            // Update Page Title
+            const titles = {
+                dashboard: "Morning, Saykot!",
+                personal: "Your Identity",
+                academic: "Academic Records",
+                notice: "What's Happening"
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+
+            if (window.innerWidth < 1024) toggleSidebar();
+            lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Filtering
+        function filterNotices(cat) {
+            const items = document.querySelectorAll('.notice-item');
+            const btns = document.querySelectorAll('.filter-btn');
+
+            btns.forEach(b => {
+                b.classList.remove('bg-black', 'text-white', 'shadow-xl');
+                b.classList.add('text-gray-400');
+            });
+
+            const activeBtn = document.getElementById('filter-' + cat);
+            activeBtn.classList.add('bg-black', 'text-white', 'shadow-xl');
+            activeBtn.classList.remove('text-gray-400');
+
+            items.forEach(item => {
+                if (cat === 'all' || item.getAttribute('data-category') === cat) {
+                    item.classList.remove('notice-hidden');
+                } else {
+                    item.classList.add('notice-hidden');
+                }
+            });
+        }
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            sb.classList.toggle('-translate-x-full');
+        }
+        const signOutBtn = document.getElementById('signOut');
+
+        if (signOutBtn) {
+            signOutBtn.addEventListener('click', function () {
+                // Optional: clear login data if needed
+                // localStorage.clear();
+                // sessionStorage.clear();
+
+                window.location.href = 'index.html';
+            });
+        }
+
+    </script>
+</body>
+
+</html>

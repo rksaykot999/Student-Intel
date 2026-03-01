@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notices | Student Intel - Advanced Student Management</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: #f8fafc;
+            overflow-x: hidden;
+            padding-top: 80px;
+        }
+
+        .font-heading {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Notice Card Styles */
+        .notice-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .notice-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .notice-card.featured {
+            border-left: 4px solid #f72585;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .notice-card.important {
+            border-left: 4px solid #ef4444;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .notice-card.academic {
+            border-left: 4px solid #4361ee;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .notice-card.event {
+            border-left: 4px solid #10b981;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .notice-card.holiday {
+            border-left: 4px solid #f59e0b;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .category-featured {
+            background: linear-gradient(135deg, #f72585, #ec4899);
+            color: white;
+        }
+
+        .category-important {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            color: white;
+        }
+
+        .category-academic {
+            background: linear-gradient(135deg, #4361ee, #3b82f6);
+            color: white;
+        }
+
+        .category-event {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+        }
+
+        .category-holiday {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+        }
+
+        .filter-btn {
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header (fully Tailwind) -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300" id="mainHeader">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a class="flex items-center" href="#">
+                    <i class="fas fa-graduation-cap text-2xl text-[#4361ee] mr-2"></i>
+                    <span class="text-2xl font-bold text-gray-900">
+                        Student<span class="text-[#4361ee]">Intel</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="about.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">About Us</a>
+                    <a href="academic.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Academics</a>
+                    <a href="department.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Departments</a>
+                    
+                    <!-- Students Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center">
+                            Students <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full left-0 w-56 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> All Students
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-chart-line w-5 mr-3 text-[#4361ee]"></i> Performance
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-clipboard-check w-5 mr-3 text-[#4361ee]"></i> Attendance
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Notices</a>
+                    <a href="contact.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Contact Us</a>
+                </nav>
+
+                <!-- Header Actions (Desktop) -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <!-- Search Box with Popup -->
+                    <div class="relative" id="desktopSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="desktopSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-48 text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="desktopSearchResults" class="search-results"></div>
+                    </div>
+                    
+                    <!-- Login Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-full font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center border border-gray-300">
+                            Login <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full right-0 w-48 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="student-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login
+                            </a>
+                            <a href="admin-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-bars text-2xl text-gray-900"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="lg:hidden absolute top-full left-0 w-full bg-white shadow-xl transform transition-all duration-300 -translate-y-full opacity-0 pointer-events-none">
+            <div class="container mx-auto px-4 py-6">
+                <div class="space-y-1">
+                    <a href="about.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">About Us</a>
+                    <a href="academic.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Academics</a>
+                    <a href="department.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Departments</a>
+
+                    <!-- Mobile Students Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Students <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">All Students</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Performance</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Attendance</a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Notices</a>
+                    <a href="contact.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Contact Us</a>
+                </div>
+
+                <!-- Mobile Header Actions -->
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <!-- Mobile Search (hidden by default, can be added if needed) -->
+                    <div class="relative mb-4" id="mobileSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="mobileSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-full text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="mobileSearchResults" class="search-results"></div>
+                    </div>
+                    <!-- Mobile Login Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium bg-gray-100 text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Login <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="student-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login</a>
+                            <a href="admin-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-16 md:py-20 overflow-hidden bg-gradient-to-r from-blue-50 to-purple-50">
+        <div
+            class="absolute top-0 right-0 w-64 h-64 bg-blue-200 rounded-full -translate-y-32 translate-x-32 opacity-20">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-64 h-64 bg-purple-200 rounded-full translate-y-32 -translate-x-32 opacity-20">
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 gradient-text font-heading">
+                    Official Notices & Announcements
+                </h1>
+                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                    Stay updated with the latest academic announcements, events, holidays, and important information
+                    from all departments.
+                </p>
+                <div class="inline-flex items-center px-4 py-2 bg-white rounded-lg shadow-sm">
+                    <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>
+                    <span class="text-gray-700 font-medium">Latest update: Today, 10:30 AM</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="py-8 bg-white border-b">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap gap-3 justify-center">
+                <button
+                    class="filter-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all active"
+                    data-filter="all">
+                    <i class="fas fa-layer-group mr-2"></i> All Notices
+                </button>
+                <button
+                    class="filter-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all"
+                    data-filter="featured">
+                    <i class="fas fa-star mr-2"></i> Featured
+                </button>
+                <button
+                    class="filter-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all"
+                    data-filter="important">
+                    <i class="fas fa-exclamation-circle mr-2"></i> Important
+                </button>
+                <button
+                    class="filter-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all"
+                    data-filter="academic">
+                    <i class="fas fa-graduation-cap mr-2"></i> Academic
+                </button>
+                <button
+                    class="filter-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all"
+                    data-filter="event">
+                    <i class="fas fa-calendar-day mr-2"></i> Events
+                </button>
+                <button
+                    class="filter-btn px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all"
+                    data-filter="holiday">
+                    <i class="fas fa-umbrella-beach mr-2"></i> Holidays
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notices Grid -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 font-heading">Recent Notices</h2>
+                <div class="text-sm text-gray-500">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Showing <span id="noticeCount">15</span> notices
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+                <!-- Featured Notice 1 -->
+                <div class="notice-card featured lg:col-span-2" data-category="featured important">
+                    <div class="p-6">
+                        <div class="flex flex-wrap items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="category-badge category-featured">
+                                    <i class="fas fa-star mr-1"></i> Featured
+                                </span>
+                                <span class="category-badge category-important">
+                                    <i class="fas fa-exclamation-circle mr-1"></i> Important
+                                </span>
+                            </div>
+                            <span class="text-sm text-gray-500">
+                                <i class="far fa-clock mr-1"></i> Today, 10:30 AM
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">
+                            <i class="fas fa-bullhorn text-blue-500 mr-2"></i>
+                            Mid-Term Examination Schedule - Spring 2024
+                        </h3>
+
+                        <p class="text-gray-600 mb-4">
+                            The detailed schedule for the Spring 2024 Mid-Term Examinations has been published. All
+                            students are required to check their examination dates, times, and venues. Special
+                            arrangements have been made for students with accommodations.
+                        </p>
+
+                        <div class="flex flex-wrap items-center justify-between mt-6 pt-4 border-t">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="fas fa-paperclip mr-2"></i>
+                                <span>Attachments: Schedule.pdf (2.5 MB)</span>
+                            </div>
+                            <div class="flex space-x-3">
+                                <button
+                                    class="px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-medium transition-colors">
+                                    <i class="fas fa-download mr-2"></i> Download
+                                </button>
+                                <button
+                                    class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-medium transition-colors view-details">
+                                    <i class="fas fa-eye mr-2"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notice 2 -->
+                <div class="notice-card academic" data-category="academic">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="category-badge category-academic">
+                                <i class="fas fa-graduation-cap mr-1"></i> Academic
+                            </span>
+                            <span class="text-sm text-gray-500">2 hours ago</span>
+                        </div>
+
+                        <h3 class="text-lg font-bold mb-3 text-gray-900">
+                            Project Submission Deadline Extension
+                        </h3>
+
+                        <p class="text-gray-600 mb-4 text-sm">
+                            Due to technical issues with the submission portal, the deadline for final year project
+                            submissions has been extended to April 25, 2024.
+                        </p>
+
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-sm text-gray-500">
+                                <i class="fas fa-user-tie mr-1"></i>
+                                Academic Office
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium text-sm view-details">
+                                Read More <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notice 3 -->
+                <div class="notice-card event" data-category="event">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="category-badge category-event">
+                                <i class="fas fa-calendar-day mr-1"></i> Event
+                            </span>
+                            <span class="text-sm text-gray-500">Yesterday</span>
+                        </div>
+
+                        <h3 class="text-lg font-bold mb-3 text-gray-900">
+                            Annual Tech Fest 2024 Registration Open
+                        </h3>
+
+                        <p class="text-gray-600 mb-4 text-sm">
+                            Registrations are now open for the Annual Tech Fest 2024. Participate in coding
+                            competitions, robotics workshops, and innovation challenges.
+                        </p>
+
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-sm text-gray-500">
+                                <i class="far fa-calendar-alt mr-1"></i>
+                                Apr 15-17, 2024
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium text-sm view-details">
+                                Register Now <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notice 4 -->
+                <div class="notice-card important" data-category="important academic">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="category-badge category-important">
+                                <i class="fas fa-exclamation-circle mr-1"></i> Important
+                            </span>
+                            <span class="text-sm text-gray-500">2 days ago</span>
+                        </div>
+
+                        <h3 class="text-lg font-bold mb-3 text-gray-900">
+                            Library System Maintenance
+                        </h3>
+
+                        <p class="text-gray-600 mb-4 text-sm">
+                            The digital library system will be unavailable from April 10-12, 2024 for scheduled
+                            maintenance. Plan your research accordingly.
+                        </p>
+
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-sm text-gray-500">
+                                <i class="fas fa-book mr-1"></i>
+                                Library Department
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium text-sm view-details">
+                                Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notice 5 -->
+                <div class="notice-card holiday" data-category="holiday">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="category-badge category-holiday">
+                                <i class="fas fa-umbrella-beach mr-1"></i> Holiday
+                            </span>
+                            <span class="text-sm text-gray-500">3 days ago</span>
+                        </div>
+
+                        <h3 class="text-lg font-bold mb-3 text-gray-900">
+                            Summer Vacation Announcement
+                        </h3>
+
+                        <p class="text-gray-600 mb-4 text-sm">
+                            Summer vacation will begin from June 1, 2024. All academic activities will resume on July 1,
+                            2024. Have a safe and enjoyable break!
+                        </p>
+
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-sm text-gray-500">
+                                <i class="far fa-calendar mr-1"></i>
+                                Jun 1 - Jul 1, 2024
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium text-sm view-details">
+                                View Calendar <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notice 6 -->
+                <div class="notice-card academic" data-category="academic">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="category-badge category-academic">
+                                <i class="fas fa-graduation-cap mr-1"></i> Academic
+                            </span>
+                            <span class="text-sm text-gray-500">4 days ago</span>
+                        </div>
+
+                        <h3 class="text-lg font-bold mb-3 text-gray-900">
+                            Scholarship Application Deadline
+                        </h3>
+
+                        <p class="text-gray-600 mb-4 text-sm">
+                            Last date to apply for merit-based scholarships is April 30, 2024. Submit your applications
+                            through the student portal.
+                        </p>
+
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-sm text-gray-500">
+                                <i class="fas fa-award mr-1"></i>
+                                Scholarship Office
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium text-sm view-details">
+                                Apply Now <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notice 7 -->
+                <div class="notice-card event" data-category="event">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="category-badge category-event">
+                                <i class="fas fa-calendar-day mr-1"></i> Event
+                            </span>
+                            <span class="text-sm text-gray-500">5 days ago</span>
+                        </div>
+
+                        <h3 class="text-lg font-bold mb-3 text-gray-900">
+                            Career Fair 2024 - Industry Partners List
+                        </h3>
+
+                        <p class="text-gray-600 mb-4 text-sm">
+                            List of participating companies for Career Fair 2024 has been published. Prepare your
+                            resumes and portfolios.
+                        </p>
+
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-sm text-gray-500">
+                                <i class="fas fa-briefcase mr-1"></i>
+                                Placement Cell
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium text-sm view-details">
+                                View List <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notice 8 -->
+                <div class="notice-card important" data-category="important">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="category-badge category-important">
+                                <i class="fas fa-exclamation-circle mr-1"></i> Important
+                            </span>
+                            <span class="text-sm text-gray-500">1 week ago</span>
+                        </div>
+
+                        <h3 class="text-lg font-bold mb-3 text-gray-900">
+                            Campus WiFi Upgrade
+                        </h3>
+
+                        <p class="text-gray-600 mb-4 text-sm">
+                            Campus WiFi will be upgraded on April 8, 2024 from 10 PM to 2 AM. There will be intermittent
+                            connectivity during this period.
+                        </p>
+
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-sm text-gray-500">
+                                <i class="fas fa-wifi mr-1"></i>
+                                IT Department
+                            </div>
+                            <button class="text-blue-600 hover:text-blue-800 font-medium text-sm view-details">
+                                More Info <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Archived Notices -->
+            <div class="mt-12 pt-8 border-t">
+                <h3 class="text-xl font-bold mb-6 text-gray-900 font-heading">
+                    <i class="fas fa-archive text-gray-400 mr-2"></i> Archived Notices
+                </h3>
+
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left text-gray-500 text-sm border-b">
+                                    <th class="pb-3 font-medium">Date</th>
+                                    <th class="pb-3 font-medium">Notice Title</th>
+                                    <th class="pb-3 font-medium">Category</th>
+                                    <th class="pb-3 font-medium">Department</th>
+                                    <th class="pb-3 font-medium">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="py-3 text-sm text-gray-600">Mar 15, 2024</td>
+                                    <td class="py-3 font-medium">Hostel Fee Payment Reminder</td>
+                                    <td class="py-3">
+                                        <span class="category-badge category-important">Important</span>
+                                    </td>
+                                    <td class="py-3 text-sm text-gray-600">Administration</td>
+                                    <td class="py-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                            <i class="fas fa-eye mr-1"></i> View
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="py-3 text-sm text-gray-600">Mar 10, 2024</td>
+                                    <td class="py-3 font-medium">Workshop on AI & Machine Learning</td>
+                                    <td class="py-3">
+                                        <span class="category-badge category-event">Event</span>
+                                    </td>
+                                    <td class="py-3 text-sm text-gray-600">Computer Science</td>
+                                    <td class="py-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                            <i class="fas fa-eye mr-1"></i> View
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b hover:bg-gray-50">
+                                    <td class="py-3 text-sm text-gray-600">Mar 5, 2024</td>
+                                    <td class="py-3 font-medium">Cultural Festival Results</td>
+                                    <td class="py-3">
+                                        <span class="category-badge category-event">Event</span>
+                                    </td>
+                                    <td class="py-3 text-sm text-gray-600">Cultural Committee</td>
+                                    <td class="py-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                            <i class="fas fa-eye mr-1"></i> View
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-3 text-sm text-gray-600">Feb 28, 2024</td>
+                                    <td class="py-3 font-medium">Library Book Return Notice</td>
+                                    <td class="py-3">
+                                        <span class="category-badge category-academic">Academic</span>
+                                    </td>
+                                    <td class="py-3 text-sm text-gray-600">Library</td>
+                                    <td class="py-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                            <i class="fas fa-eye mr-1"></i> View
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notice Board Info -->
+    <section class="py-12 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="flex items-start mb-6">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-info-circle text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-900 font-heading">Notice Board Information</h3>
+                            <p class="text-gray-600">
+                                This notice board displays all official announcements from the institution. Notices are
+                                categorized for easy navigation. For urgent matters, please contact the respective
+                                department offices.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <i class="fas fa-bell text-blue-600 text-2xl mb-3"></i>
+                            <h4 class="font-bold mb-2">Notification System</h4>
+                            <p class="text-sm text-gray-600">Get email/SMS alerts for important notices</p>
+                        </div>
+                        <div class="text-center p-4 bg-purple-50 rounded-lg">
+                            <i class="fas fa-mobile-alt text-purple-600 text-2xl mb-3"></i>
+                            <h4 class="font-bold mb-2">Mobile App</h4>
+                            <p class="text-sm text-gray-600">Download our app for instant notifications</p>
+                        </div>
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <i class="fas fa-question-circle text-green-600 text-2xl mb-3"></i>
+                            <h4 class="font-bold mb-2">Need Help?</h4>
+                            <p class="text-sm text-gray-600">Contact notice board admin for assistance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1d3557] text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center text-2xl font-bold mb-4">
+                        <i class="fas fa-graduation-cap text-[#4361ee] mr-2"></i>
+                        <span>Student<span class="text-[#4361ee]">Intel</span></span>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">Advanced student intelligence management platform for modern educational institutions.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Products</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Student Analytics</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Attendance System</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Gradebook</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Communication Hub</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Parent Portal</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Documentation</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Tutorials</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Blog</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Case Studies</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Support Center</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> About Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Careers</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Contact</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Partners</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-300">
+                <p>&copy; 2023 Student Intel Management. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Notice Details -->
+    <div id="noticeModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 font-heading" id="modalTitle">Notice Details</h3>
+                    <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+
+                <div id="modalContent" class="space-y-4">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle - FIXED VERSION
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+        let isMenuOpen = false;
+
+        // Function to open mobile menu
+        function openMobileMenu() {
+            isMenuOpen = true;
+            mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenuButton.innerHTML = '<i class="fas fa-times text-2xl text-gray-900"></i>';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        }
+
+        // Function to close mobile menu
+        function closeMobileMenu() {
+            isMenuOpen = false;
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars text-2xl text-gray-900"></i>';
+            document.body.style.overflow = ''; // Restore scrolling
+
+            // Close all dropdowns
+            document.querySelectorAll('.mobile-dropdown-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.mobile-dropdown-toggle i').forEach(icon => {
+                icon.classList.remove('rotate-180');
+            });
+        }
+
+        // Toggle mobile menu
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isMenuOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        // Mobile Dropdown Toggle
+        mobileDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+
+                // Toggle current dropdown
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+
+                // Close other dropdowns
+                mobileDropdownToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.add('hidden');
+                        otherToggle.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) {
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // Sticky Header Behavior
+        const header = document.getElementById('mainHeader');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('shadow-lg', 'bg-white/98');
+
+                // Hide header on scroll down, show on scroll up
+                if (window.scrollY > lastScrollY && window.scrollY > 200 && !isMenuOpen) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+            } else {
+                header.classList.remove('shadow-lg', 'bg-white/98');
+                header.style.transform = 'translateY(0)';
+            }
+
+            lastScrollY = window.scrollY;
+        });
+
+        // Close mobile menu on larger screens
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        // Initialize header
+        document.addEventListener('DOMContentLoaded', () => {
+            // Make sure mobile menu is properly hidden on load
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+        });
+
+        // Notice Filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const noticeCards = document.querySelectorAll('.notice-card');
+        const noticeCount = document.getElementById('noticeCount');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filter = button.dataset.filter;
+                let visibleCount = 0;
+
+                // Filter notice cards
+                noticeCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category.includes(filter)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Update count
+                noticeCount.textContent = visibleCount;
+            });
+        });
+
+        // Notice Modal
+        const noticeModal = document.getElementById('noticeModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const viewButtons = document.querySelectorAll('.view-details');
+
+        // Sample notice details
+        const noticeDetails = {
+            'Mid-Term Examination Schedule - Spring 2024': {
+                title: 'Mid-Term Examination Schedule - Spring 2024',
+                category: 'Featured & Important',
+                date: 'Today, 10:30 AM',
+                department: 'Examination Office',
+                content: `
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 text-blue-800">Important Information:</h4>
+                            <p class="text-blue-700">The Spring 2024 Mid-Term Examinations will be held from April 20 to May 5, 2024. All students must strictly adhere to the examination schedule and guidelines.</p>
+                        </div>
+                        
+                        <h4 class="font-bold text-gray-900">Examination Guidelines:</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                            <li>Students must bring their ID cards to the examination hall</li>
+                            <li>Reporting time is 30 minutes before the exam starts</li>
+                            <li>Electronic devices are strictly prohibited</li>
+                            <li>Special arrangements for students with accommodations</li>
+                        </ul>
+                        
+                        <h4 class="font-bold text-gray-900">Important Dates:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between border-b pb-2">
+                                <span>Exam Schedule Publication</span>
+                                <span class="font-medium">Today</span>
+                            </li>
+                            <li class="flex justify-between border-b pb-2">
+                                <span>Examination Period</span>
+                                <span class="font-medium">Apr 20 - May 5, 2024</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Result Publication</span>
+                                <span class="font-medium">May 20, 2024</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-6 pt-4 border-t">
+                            <h4 class="font-bold mb-3 text-gray-900">Download Files:</h4>
+                            <div class="space-y-2">
+                                <a href="#" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                                    <i class="fas fa-file-pdf text-red-500 mr-3"></i>
+                                    <div>
+                                        <div class="font-medium">Examination Schedule.pdf</div>
+                                        <div class="text-sm text-gray-500">2.5 MB • Updated today</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                                    <i class="fas fa-file-word text-blue-500 mr-3"></i>
+                                    <div>
+                                        <div class="font-medium">Examination Guidelines.docx</div>
+                                        <div class="text-sm text-gray-500">1.2 MB • Updated today</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+            // Add more notice details as needed
+        };
+
+        viewButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const card = e.target.closest('.notice-card');
+                const title = card.querySelector('h3').textContent;
+
+                if (noticeDetails[title]) {
+                    modalTitle.textContent = noticeDetails[title].title;
+                    modalContent.innerHTML = `
+                        <div class="flex flex-wrap items-center justify-between mb-6 p-4 bg-gray-50 rounded-lg">
+                            <div>
+                                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mr-2">
+                                    ${noticeDetails[title].category}
+                                </span>
+                                <span class="text-gray-600 text-sm">
+                                    <i class="far fa-clock mr-1"></i> ${noticeDetails[title].date}
+                                </span>
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                                <i class="fas fa-building mr-1"></i> ${noticeDetails[title].department}
+                            </div>
+                        </div>
+                        ${noticeDetails[title].content}
+                    `;
+                } else {
+                    modalTitle.textContent = 'Notice Details';
+                    modalContent.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-info-circle text-gray-400 text-4xl mb-4"></i>
+                            <p class="text-gray-600">Notice details are not available at the moment.</p>
+                        </div>
+                    `;
+                }
+
+                noticeModal.classList.remove('hidden');
+                noticeModal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            noticeModal.classList.add('hidden');
+            noticeModal.classList.remove('flex');
+            document.body.style.overflow = '';
+        });
+
+        // Close modal when clicking outside
+        noticeModal.addEventListener('click', (e) => {
+            if (e.target === noticeModal) {
+                noticeModal.classList.add('hidden');
+                noticeModal.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && noticeModal.classList.contains('flex')) {
+                noticeModal.classList.add('hidden');
+                noticeModal.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('input[placeholder="Search notices..."]');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            let visibleCount = 0;
+
+            noticeCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const content = card.querySelector('p').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            noticeCount.textContent = visibleCount;
+        });
+    </script>
+</body>
+
+</html>

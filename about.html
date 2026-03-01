@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Student Intel Management</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Preserve only essential custom styles & animations from homepage */
+        body { font-family: 'Poppins', sans-serif; padding-top: 80px; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        /* search results dropdown */
+        .search-results {
+            position: absolute; top: 100%; left: 0; width: 100%; margin-top: 0.5rem;
+            background: white; border-radius: 0.75rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            max-height: 300px; overflow-y: auto; z-index: 1000; display: none;
+        }
+        .search-results.show { display: block; }
+        .search-result-item {
+            padding: 0.75rem 1rem; cursor: pointer; transition: background 0.2s;
+            border-bottom: 1px solid #e9ecef; display: flex; align-items: center; gap: 0.75rem;
+        }
+        .search-result-item:last-child { border-bottom: none; }
+        .search-result-item:hover { background: #e9ecef; }
+        .search-result-item i { color: #4361ee; width: 1.25rem; }
+        /* overlay for teacher cards */
+        .teacher-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.7); padding: 1rem; display: flex; justify-content: center; gap: 1rem;
+            transform: translateY(100%); transition: transform 0.3s ease;
+        }
+        .teacher-card:hover .teacher-overlay { transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-[#f8fafc] text-[#1d3557] antialiased">
+
+    <!-- Header (fully Tailwind) -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300" id="mainHeader">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a class="flex items-center" href="#">
+                    <i class="fas fa-graduation-cap text-2xl text-[#4361ee] mr-2"></i>
+                    <span class="text-2xl font-bold text-gray-900">
+                        Student<span class="text-[#4361ee]">Intel</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="about.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">About Us</a>
+                    <a href="academic.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Academics</a>
+                    <a href="department.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Departments</a>
+                    
+                    <!-- Students Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center">
+                            Students <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full left-0 w-56 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> All Students
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-chart-line w-5 mr-3 text-[#4361ee]"></i> Performance
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-clipboard-check w-5 mr-3 text-[#4361ee]"></i> Attendance
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Notices</a>
+                    <a href="contact.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Contact Us</a>
+                </nav>
+
+                <!-- Header Actions (Desktop) -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <!-- Search Box with Popup -->
+                    <div class="relative" id="desktopSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="desktopSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-48 text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="desktopSearchResults" class="search-results"></div>
+                    </div>
+                    
+                    <!-- Login Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-full font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center border border-gray-300">
+                            Login <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full right-0 w-48 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="student-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login
+                            </a>
+                            <a href="admin-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-bars text-2xl text-gray-900"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="lg:hidden absolute top-full left-0 w-full bg-white shadow-xl transform transition-all duration-300 -translate-y-full opacity-0 pointer-events-none">
+            <div class="container mx-auto px-4 py-6">
+                <div class="space-y-1">
+                    <a href="about.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">About Us</a>
+                    <a href="academic.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Academics</a>
+                    <a href="department.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Departments</a>
+
+                    <!-- Mobile Students Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Students <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">All Students</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Performance</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Attendance</a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Notices</a>
+                    <a href="contact.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Contact Us</a>
+                </div>
+
+                <!-- Mobile Header Actions -->
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <!-- Mobile Search (hidden by default, can be added if needed) -->
+                    <div class="relative mb-4" id="mobileSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="mobileSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-full text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="mobileSearchResults" class="search-results"></div>
+                    </div>
+                    <!-- Mobile Login Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium bg-gray-100 text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Login <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="student-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login</a>
+                            <a href="admin-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT (About Us) ===== -->
+
+    <!-- Hero Section (gradient, centered) -->
+    <section class="relative bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] text-white py-24 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1000 1000%22 opacity=%220.1%22><polygon fill=%22white%22 points=%220,1000 1000,0 1000,1000%22/></svg>')] bg-cover"></div>
+        <div class="container mx-auto px-4 text-center relative z-10 max-w-4xl">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">Transforming Education Through Innovation</h1>
+            <p class="text-xl opacity-90 mb-10 leading-relaxed">At Student Intel, we're pioneering the future of educational management by combining cutting-edge technology with pedagogical expertise. Our journey began with a simple vision: to empower educators and institutions with tools that make a real difference in student outcomes.</p>
+        </div>
+    </section>
+
+    <!-- About Institute (Our Story) -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] bg-clip-text text-transparent">Our Story & Vision</h2>
+                    <p class="text-gray-600 mb-4 text-lg leading-relaxed">Founded in 2008 by a team of educators and technologists, Student Intel began as a research project at Stanford University's School of Education. We recognized that while educational data was abundant, it was rarely transformed into actionable insights that could truly impact student success.</p>
+                    <p class="text-gray-600 mb-4 text-lg leading-relaxed">Our breakthrough came when we developed the first AI-powered predictive analytics model specifically designed for educational institutions. This technology could identify at-risk students weeks before traditional methods, allowing for timely intervention.</p>
+                    <p class="text-gray-600 mb-8 text-lg leading-relaxed">Today, we serve educational institutions across 35 countries, from primary schools to universities. Our platform processes over 10 million data points daily, helping educators make data-driven decisions that enhance learning outcomes.</p>
+                    <button class="btn-primary inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" onclick="document.getElementById('mission').scrollIntoView({behavior:'smooth'})">Learn More About Our Mission</button>
+                </div>
+                <div class="relative">
+                    <img src="images/2022-10-05.jpg" alt="Institute" class="rounded-2xl shadow-xl w-full h-auto object-cover">
+                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4 animate-float">
+                        <i class="fas fa-award text-4xl text-[#4361ee]"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-900">EdTech Innovation Award 2023</h4>
+                            <p class="text-gray-600 text-sm">Recognized for Excellence in Educational Technology</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section id="mission" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-center text-4xl font-bold mb-2 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-gradient-to-r after:from-[#4361ee] after:to-[#3a0ca3] after:rounded">Our Mission & Vision</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">Guiding principles that drive everything we do at Student Intel</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Mission -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl"><i class="fas fa-bullseye"></i></div>
+                    <h3 class="text-2xl font-bold mb-3">Our Mission</h3>
+                    <p class="text-gray-600">To empower educational institutions worldwide with intelligent tools that transform data into actionable insights, enabling educators to personalize learning, identify at-risk students early, and improve overall academic outcomes through evidence-based decision making.</p>
+                </div>
+                <!-- Vision -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl"><i class="fas fa-eye"></i></div>
+                    <h3 class="text-2xl font-bold mb-3">Our Vision</h3>
+                    <p class="text-gray-600">To create a world where every student receives personalized educational support, every teacher has access to predictive insights, and every institution can leverage data to create optimal learning environments that foster growth, innovation, and lifelong success.</p>
+                </div>
+                <!-- Promise -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-6 text-white text-3xl"><i class="fas fa-rocket"></i></div>
+                    <h3 class="text-2xl font-bold mb-3">Our Promise</h3>
+                    <p class="text-gray-600">We commit to continuous innovation, ethical data practices, and unwavering support for our partner institutions. We believe technology should enhance, not replace, the human connection that is fundamental to education.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-center text-4xl font-bold mb-2 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-gradient-to-r after:from-[#4361ee] after:to-[#3a0ca3] after:rounded">Our Core Values</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">The principles that guide our work and define our culture</p>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- value cards -->
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-l-4 border-[#4361ee]">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-4 text-white text-2xl"><i class="fas fa-lightbulb"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Innovation</h3>
+                    <p class="text-gray-600">We constantly push boundaries in educational technology, developing novel solutions to complex challenges while maintaining practical applicability.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-l-4 border-[#4361ee]">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-4 text-white text-2xl"><i class="fas fa-shield-alt"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Integrity</h3>
+                    <p class="text-gray-600">We maintain the highest ethical standards in data handling, transparency in our operations, and honesty in all our relationships.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-l-4 border-[#4361ee]">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-4 text-white text-2xl"><i class="fas fa-users"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Collaboration</h3>
+                    <p class="text-gray-600">We believe in the power of partnership—working closely with educators, institutions, and students to co-create solutions that truly meet their needs.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-l-4 border-[#4361ee]">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-4 text-white text-2xl"><i class="fas fa-graduation-cap"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Educational Excellence</h3>
+                    <p class="text-gray-600">Every decision we make is evaluated against its potential to enhance teaching effectiveness and improve student learning outcomes.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-l-4 border-[#4361ee]">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-4 text-white text-2xl"><i class="fas fa-heart"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Student-Centered</h3>
+                    <p class="text-gray-600">We keep students at the heart of everything we do, designing solutions that prioritize their growth, well-being, and future success.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-l-4 border-[#4361ee]">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center mb-4 text-white text-2xl"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Continuous Improvement</h3>
+                    <p class="text-gray-600">We embrace feedback, learn from both successes and failures, and continually refine our approaches to deliver increasing value.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements -->
+    <section class="py-24 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1000 1000%22 opacity=%220.1%22><polygon fill=%22white%22 points=%220,1000 1000,0 1000,1000%22/></svg>')] bg-cover"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="text-center text-4xl font-bold mb-12 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-white/70 after:rounded">Our Achievements</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2">
+                    <i class="fas fa-trophy text-5xl mb-4 opacity-90"></i>
+                    <div class="text-5xl font-bold font-orbitron mb-2">50+</div>
+                    <div class="text-xl opacity-90">Awards Won</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2">
+                    <i class="fas fa-university text-5xl mb-4 opacity-90"></i>
+                    <div class="text-5xl font-bold font-orbitron mb-2">250+</div>
+                    <div class="text-xl opacity-90">Institutions Served</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2">
+                    <i class="fas fa-user-graduate text-5xl mb-4 opacity-90"></i>
+                    <div class="text-5xl font-bold font-orbitron mb-2">500K+</div>
+                    <div class="text-xl opacity-90">Students Impacted</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2">
+                    <i class="fas fa-chart-line text-5xl mb-4 opacity-90"></i>
+                    <div class="text-5xl font-bold font-orbitron mb-2">15+</div>
+                    <div class="text-xl opacity-90">Years of Excellence</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teachers -->
+    <section class="py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-center text-4xl font-bold mb-2 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-gradient-to-r after:from-[#4361ee] after:to-[#3a0ca3] after:rounded">Meet Our Educational Experts</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">The brilliant minds shaping the future of educational technology</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- teacher 1 -->
+                <div class="teacher-card bg-white rounded-2xl shadow-md overflow-hidden group relative">
+                    <div class="h-64 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-white text-7xl"><i class="fas fa-user-tie"></i></div>
+                    <div class="teacher-overlay">
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fas fa-envelope"></i></a>
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fas fa-globe"></i></a>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-bold">Engineer Md. Rakib Ullah</h3>
+                        <p class="text-[#4361ee] font-medium">Principal of Institute</p>
+                        <p class="text-gray-500 text-sm mb-3">Barishal Polytechnic Institute</p>
+                        <p class="text-gray-600 text-sm mb-4">Former Dean of Education at Stanford with 25+ years in educational research and technology integration.</p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs">Learning Analytics</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs">Curriculum Design</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- teacher 2 -->
+                <div class="teacher-card bg-white rounded-2xl shadow-md overflow-hidden group relative">
+                    <div class="h-64 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-white text-7xl"><i class="fas fa-user-tie"></i></div>
+                    <div class="teacher-overlay">
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fas fa-envelope"></i></a>
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fas fa-globe"></i></a>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-bold">Engineer Babu Shaha</h3>
+                        <p class="text-[#4361ee] font-medium">Vice Principal</p>
+                        <p class="text-gray-500 text-sm mb-3">Barishal Polytechnic Institute</p>
+                        <p class="text-gray-600 text-sm mb-4">Machine learning pioneer with 15+ publications in educational data mining.</p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs">Machine Learning</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs">Predictive Analytics</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- teacher 3 -->
+                <div class="teacher-card bg-white rounded-2xl shadow-md overflow-hidden group relative">
+                    <div class="h-64 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-white text-7xl"><i class="fas fa-user-tie"></i></div>
+                    <div class="teacher-overlay">
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fas fa-envelope"></i></a>
+                        <a href="#" class="w-10 h-10 bg-[#4361ee] rounded-full flex items-center justify-center text-white hover:bg-[#3a56d4]"><i class="fas fa-globe"></i></a>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-bold">Shakil Al Masum</h3>
+                        <p class="text-[#4361ee] font-medium">Head of Department (CST)</p>
+                        <p class="text-gray-500 text-sm mb-3">Computer Science and Technology</p>
+                        <p class="text-gray-600 text-sm mb-4">Specializes in designing interventions based on behavioral and performance data.</p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs">Student Psychology</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs">Behavioral Analytics</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- additional teachers truncated for brevity, but you can add more as needed -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Factors -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-center text-4xl font-bold mb-2 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-gradient-to-r after:from-[#4361ee] after:to-[#3a0ca3] after:rounded">What Makes Us Different</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-lg">Key factors that set Student Intel apart in educational technology</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="flex gap-4 p-6 rounded-2xl shadow-md hover:shadow-xl transition">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-white text-2xl flex-shrink-0"><i class="fas fa-brain"></i></div>
+                    <div><h3 class="text-xl font-bold mb-2">Proprietary AI Algorithms</h3><p class="text-gray-600">Our machine learning models are specifically trained on educational data.</p></div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-2xl shadow-md hover:shadow-xl transition">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-white text-2xl flex-shrink-0"><i class="fas fa-shield-alt"></i></div>
+                    <div><h3 class="text-xl font-bold mb-2">Enterprise-Grade Security</h3><p class="text-gray-600">Military-grade encryption, FERPA & GDPR compliant.</p></div>
+                </div>
+                <div class="flex gap-4 p-6 rounded-2xl shadow-md hover:shadow-xl transition">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-white text-2xl flex-shrink-0"><i class="fas fa-handshake"></i></div>
+                    <div><h3 class="text-xl font-bold mb-2">Dedicated Support Teams</h3><p class="text-gray-600">Each institution receives a dedicated implementation specialist.</p></div>
+                </div>
+                <!-- add more as needed -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Developers -->
+    <section class="py-24 bg-gradient-to-r from-[#7209b7] to-[#f72585] text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-center text-4xl font-bold mb-12 relative after:content-[''] after:absolute after:bottom-[-10px] after:left-1/2 after:-translate-x-1/2 after:w-20 after:h-1 after:bg-white/70 after:rounded">Meet The Development Team</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- developer 1 -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <div class="flex flex-col items-center">
+                        <div class="w-28 h-28 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-5xl mb-4"><i class="fas fa-code"></i></div>
+                        <h3 class="text-2xl font-bold">RK Soikot</h3>
+                        <p class="text-white/80">Project Leader / Database Management</p>
+                        <div class="flex gap-3 my-3">
+                            <a href="#" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-[#7209b7]"><i class="fab fa-github"></i></a>
+                            <a href="#" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-[#7209b7]"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                        <div class="flex flex-wrap gap-2 justify-center mb-3">
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">System Architecture</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">Cloud</span>
+                        </div>
+                        <p class="text-center text-white/90 italic text-sm">"Building systems that handle millions of educational data points."</p>
+                    </div>
+                </div>
+                <!-- developer 2 -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <div class="flex flex-col items-center">
+                        <div class="w-28 h-28 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-5xl mb-4"><i class="fas fa-shield-alt"></i></div>
+                        <h3 class="text-2xl font-bold">MD. Shariyer Najim</h3>
+                        <p class="text-white/80">UX/UI & Front-end Designer</p>
+                        <div class="flex gap-3 my-3">
+                            <a href="#" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-[#7209b7]"><i class="fab fa-github"></i></a>
+                            <a href="#" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-[#7209b7]"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                        <div class="flex flex-wrap gap-2 justify-center mb-3">
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">User Experience</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">Design Systems</span>
+                        </div>
+                        <p class="text-center text-white/90 italic text-sm">"Great design means making complex data simple for educators."</p>
+                    </div>
+                </div>
+                <!-- developer 3 -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <div class="flex flex-col items-center">
+                        <div class="w-28 h-28 rounded-full bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] flex items-center justify-center text-5xl mb-4"><i class="fas fa-mobile-alt"></i></div>
+                        <h3 class="text-2xl font-bold">Abu Bakar Siddik</h3>
+                        <p class="text-white/80">Front-end Designer</p>
+                        <div class="flex gap-3 my-3">
+                            <a href="#" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-[#7209b7]"><i class="fab fa-github"></i></a>
+                            <a href="#" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-[#7209b7]"><i class="fab fa-kaggle"></i></a>
+                        </div>
+                        <div class="flex flex-wrap gap-2 justify-center mb-3">
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">Machine Learning</span>
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">Data Science</span>
+                        </div>
+                        <p class="text-center text-white/90 italic text-sm">"Predictive models that understand learning patterns."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-24 bg-white text-center">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] bg-clip-text text-transparent">Join Our Educational Revolution</h2>
+            <p class="text-xl text-gray-600 mb-10">Become part of a growing community of forward-thinking institutions transforming education through data-driven insights and innovative technology.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="btn-primary inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-[#4361ee] to-[#3a0ca3] shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" onclick="window.location.href='contact.html'"><i class="fas fa-calendar-check mr-2"></i> Learn More</button>
+                <button class="btn-outline inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-[#4361ee] border-2 border-[#4361ee] hover:bg-[#4361ee] hover:text-white transition-all duration-300" onclick="window.location.href='contact.html#contactForm'"><i class="fas fa-envelope mr-2"></i> Contact Our Team</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1d3557] text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center text-2xl font-bold mb-4">
+                        <i class="fas fa-graduation-cap text-[#4361ee] mr-2"></i>
+                        <span>Student<span class="text-[#4361ee]">Intel</span></span>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">Advanced student intelligence management platform for modern educational institutions.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Products</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Student Analytics</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Attendance System</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Gradebook</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Communication Hub</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Parent Portal</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Documentation</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Tutorials</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Blog</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Case Studies</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Support Center</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> About Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Careers</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Contact</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Partners</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-300">
+                <p>&copy; 2023 Student Intel Management. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Combined JavaScript (mobile menu, sticky header, about search) -->
+    <script>
+        (function() {
+            // ----- About Us search data -----
+            const aboutTopics = [
+                "Our History", "Mission Statement", "Core Values", "Teaching Team",
+                "Development Team", "Achievements", "Awards", "Research", "Partnerships",
+                "Future Plans", "EdTech Innovation", "Predictive Analytics", "Student Success"
+            ];
+
+            function initAboutSearch(inputId, resultsId, containerId) {
+                const input = document.getElementById(inputId);
+                const resultsDiv = document.getElementById(resultsId);
+                const container = document.getElementById(containerId);
+                if (!input || !resultsDiv) return;
+
+                document.addEventListener('click', (e) => {
+                    if (container && !container.contains(e.target)) resultsDiv.classList.remove('show');
+                });
+
+                input.addEventListener('input', function() {
+                    const query = this.value.trim().toLowerCase();
+                    if (query === '') {
+                        resultsDiv.classList.remove('show');
+                        return;
+                    }
+
+                    const filtered = aboutTopics.filter(topic => topic.toLowerCase().includes(query));
+                    if (filtered.length === 0) {
+                        resultsDiv.innerHTML = '<div class="p-3 text-gray-500 text-center">No topics found</div>';
+                    } else {
+                        resultsDiv.innerHTML = filtered.map(topic => `
+                            <div class="search-result-item" data-topic="${topic}">
+                                <i class="fas fa-search"></i>
+                                <span class="font-semibold text-gray-800">${topic}</span>
+                            </div>
+                        `).join('');
+                    }
+                    resultsDiv.classList.add('show');
+
+                    document.querySelectorAll('.search-result-item').forEach(item => {
+                        item.addEventListener('click', function() {
+                            const topic = this.dataset.topic;
+                            input.value = topic;
+                            resultsDiv.classList.remove('show');
+                            // Optional: scroll to section (simplified)
+                            alert(`Search selected: ${topic} (scroll simulation)`);
+                        });
+                    });
+                });
+            }
+
+            // Initialize search for desktop and mobile
+            initAboutSearch('desktopSearchInput', 'desktopSearchResults', 'desktopSearchContainer');
+            initAboutSearch('mobileSearchInput', 'mobileSearchResults', 'mobileSearchContainer');
+
+            // ----- Mobile menu & sticky header (copied from homepage) -----
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+            let isMenuOpen = false;
+
+            function openMobileMenu() {
+                isMenuOpen = true;
+                mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                mobileMenuButton.innerHTML = '<i class="fas fa-times text-2xl text-gray-900"></i>';
+                document.body.style.overflow = 'hidden';
+            }
+            function closeMobileMenu() {
+                isMenuOpen = false;
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenuButton.innerHTML = '<i class="fas fa-bars text-2xl text-gray-900"></i>';
+                document.body.style.overflow = '';
+                document.querySelectorAll('.mobile-dropdown-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.mobile-dropdown-toggle i').forEach(icon => icon.classList.remove('rotate-180'));
+            }
+
+            mobileMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                isMenuOpen ? closeMobileMenu() : openMobileMenu();
+            });
+
+            mobileDropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('i');
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                    mobileDropdownToggles.forEach(other => {
+                        if (other !== toggle) {
+                            other.nextElementSibling.classList.add('hidden');
+                            other.querySelector('i').classList.remove('rotate-180');
+                        }
+                    });
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                    closeMobileMenu();
+                }
+            });
+
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', () => { if (isMenuOpen) closeMobileMenu(); });
+            });
+
+            // Sticky header
+            const header = document.getElementById('mainHeader');
+            let lastScrollY = window.scrollY;
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('shadow-lg', 'bg-white/98');
+                    if (window.scrollY > lastScrollY && window.scrollY > 200 && !isMenuOpen) {
+                        header.style.transform = 'translateY(-100%)';
+                    } else {
+                        header.style.transform = 'translateY(0)';
+                    }
+                } else {
+                    header.classList.remove('shadow-lg', 'bg-white/98');
+                    header.style.transform = 'translateY(0)';
+                }
+                lastScrollY = window.scrollY;
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 1024 && isMenuOpen) closeMobileMenu();
+            });
+
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isMenuOpen) closeMobileMenu(); });
+
+            // Ensure mobile menu hidden on load
+            document.addEventListener('DOMContentLoaded', () => {
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            });
+        })();
+    </script>
+</body>
+</html>

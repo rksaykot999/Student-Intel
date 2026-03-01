@@ -1,0 +1,2591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Student Intel Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        /* CSS Variables for Consistent Design */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #e63946;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
+            --gradient-accent: linear-gradient(135deg, #4cc9f0, #4361ee);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04);
+            --border-radius: 12px;
+            --border-radius-lg: 20px;
+            --transition: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+            --font-primary: 'Poppins', sans-serif;
+            --font-heading: 'Orbitron', sans-serif;
+        }
+
+        /* Global Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .logo-highlight {
+            color: var(--primary);
+        }
+
+        /* Navigation */
+        .main-nav {
+            display: flex;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 220px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-xl);
+            padding: 1rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-link {
+            display: flex;
+            align-items: center;
+            padding: 0.7rem 1.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .dropdown-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .dropdown-link:hover {
+            background: var(--gray-light);
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--gray-light);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 200px;
+            padding: 0.3rem;
+        }
+
+        .search-btn {
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            color: var(--primary);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: transparent;
+            border: none;
+            color: var(--dark);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .notification-btn:hover {
+            background: var(--gray-light);
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .user-profile:hover {
+            background: var(--gray-light);
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Contact Hero Section */
+        .contact-hero {
+            padding: 150px 2rem 80px;
+            background: var(--gradient-primary);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .contact-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .contact-hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: white;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-hero-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2.5rem;
+        }
+
+        .contact-hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Contact Main Section */
+        .contact-main {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        /* Contact Form */
+        .contact-form-container {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .form-input.error, .form-textarea.error {
+            border-color: var(--danger);
+        }
+
+        .form-input.success, .form-textarea.success {
+            border-color: var(--success);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-hint {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .form-error {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--danger);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transition);
+        }
+
+        .form-error.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .form-checkbox input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .form-checkbox label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .form-checkbox label a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .form-checkbox label a:hover {
+            text-decoration: underline;
+        }
+
+        .form-submit {
+            margin-top: 1rem;
+            align-self: flex-start;
+        }
+
+        /* Contact Info Cards */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-info-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .contact-info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-primary);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: var(--transition);
+        }
+
+        .contact-info-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .contact-info-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .contact-info-title {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        .contact-info-content {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .contact-info-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .contact-info-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info-list i {
+            color: var(--primary);
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-info-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .contact-info-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Contact Map Section */
+        .contact-map-section {
+            padding: 0 0 6rem;
+        }
+
+        .map-container {
+            height: 400px;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .map-placeholder {
+            height: 100%;
+            background: var(--gradient-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .map-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .map-placeholder h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .map-placeholder p {
+            opacity: 0.9;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 6rem 0;
+            background: #f8fafc;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-question i {
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 2rem 1.5rem;
+            max-height: 500px;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .team-member-image {
+            height: 250px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .team-member-content {
+            padding: 2rem;
+        }
+
+        .team-member-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member-role {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .team-member-bio {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-member-contact {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .team-member-contact a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--gray-light);
+            border-radius: 50%;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .team-member-contact a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* CTA Section */
+        .contact-cta {
+            padding: 6rem 0;
+            background: var(--gradient-secondary);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.1"><circle fill="white" cx="500" cy="500" r="400"/></svg>');
+            background-size: cover;
+        }
+
+        .contact-cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .contact-cta-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.7rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .footer-description {
+            color: #a0aec0;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-links a::before {
+            content: '›';
+            margin-right: 5px;
+            color: var(--primary);
+        }
+
+        .subscribe-form {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .subscribe-form input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+
+        .subscribe-form input::placeholder {
+            color: #a0aec0;
+        }
+
+        .subscribe-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1.2rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .subscribe-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 0;
+        }
+
+        .footer-bottom-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-bottom-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .contact-hero-title {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 1rem;
+            }
+            
+            .nav-list {
+                display: none;
+            }
+            
+            .contact-hero {
+                padding: 130px 1rem 60px;
+            }
+            
+            .contact-hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .contact-form-container {
+                padding: 2rem;
+            }
+            
+            .contact-hero-actions, .contact-cta-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-bottom-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-hero-title {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title::after {
+                width: 60px;
+            }
+            
+            .search-box input {
+                width: 150px;
+            }
+            
+            .user-profile span {
+                display: none;
+            }
+            
+            .contact-form-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header (fully Tailwind) -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300" id="mainHeader">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a class="flex items-center" href="#">
+                    <i class="fas fa-graduation-cap text-2xl text-[#4361ee] mr-2"></i>
+                    <span class="text-2xl font-bold text-gray-900">
+                        Student<span class="text-[#4361ee]">Intel</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="about.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">About Us</a>
+                    <a href="academic.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Academics</a>
+                    <a href="department.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Departments</a>
+                    
+                    <!-- Students Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center">
+                            Students <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full left-0 w-56 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> All Students
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-chart-line w-5 mr-3 text-[#4361ee]"></i> Performance
+                            </a>
+                            <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-clipboard-check w-5 mr-3 text-[#4361ee]"></i> Attendance
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Notices</a>
+                    <a href="contact.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Contact Us</a>
+                </nav>
+
+                <!-- Header Actions (Desktop) -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <!-- Search Box with Popup -->
+                    <div class="relative" id="desktopSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="desktopSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-48 text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="desktopSearchResults" class="search-results"></div>
+                    </div>
+                    
+                    <!-- Login Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-full font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center border border-gray-300">
+                            Login <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full right-0 w-48 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="student-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login
+                            </a>
+                            <a href="admin-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-bars text-2xl text-gray-900"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="lg:hidden absolute top-full left-0 w-full bg-white shadow-xl transform transition-all duration-300 -translate-y-full opacity-0 pointer-events-none">
+            <div class="container mx-auto px-4 py-6">
+                <div class="space-y-1">
+                    <a href="about.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">About Us</a>
+                    <a href="academic.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Academics</a>
+                    <a href="department.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Departments</a>
+
+                    <!-- Mobile Students Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Students <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">All Students</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Performance</a>
+                            <a href="#" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Attendance</a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Notices</a>
+                    <a href="contact.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Contact Us</a>
+                </div>
+
+                <!-- Mobile Header Actions -->
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <!-- Mobile Search (hidden by default, can be added if needed) -->
+                    <div class="relative mb-4" id="mobileSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="mobileSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-full text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="mobileSearchResults" class="search-results"></div>
+                    </div>
+                    <!-- Mobile Login Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium bg-gray-100 text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Login <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="student-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login</a>
+                            <a href="admin-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
+        <div class="contact-hero-content">
+            <h1 class="contact-hero-title">Get in Touch with Student Intel</h1>
+            <p class="contact-hero-description">Have questions about our student management platform? Our team is here to help you transform educational experiences with cutting-edge technology.</p>
+            <div class="contact-hero-actions">
+                <button class="btn btn-secondary" onclick="scrollToSection('.contact-form-container')">
+                Send Message 
+                </button>
+                <button class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border-color: white;" onclick="scrollToSection('.faq-section')">
+                Browse FAQs
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Main Section -->
+    <section class="contact-main">
+        <div class="container">
+            <div class="contact-container">
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <h2 class="form-title">Send us a Message</h2>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" class="form-input" id="name" placeholder="Enter your full name" required>
+                            <span class="form-hint">Please enter your first and last name</span>
+                            <span class="form-error" id="nameError">Name is required</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" class="form-input" id="email" placeholder="Enter your email address" required>
+                            <span class="form-hint">We'll never share your email with anyone else</span>
+                            <span class="form-error" id="emailError">Valid email is required</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Institution/Organization</label>
+                            <input type="text" class="form-input" id="institution" placeholder="Enter your school or organization">
+                            <span class="form-hint">Optional but helps us serve you better</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Department / Role</label>
+                            <select class="form-input" id="role">
+                                <option value="">Select your role</option>
+                                <option value="administrator">School Administrator</option>
+                                <option value="teacher">Teacher/Educator</option>
+                                <option value="it">IT Staff</option>
+                                <option value="parent">Parent/Guardian</option>
+                                <option value="student">Student</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Inquiry Type *</label>
+                            <select class="form-input" id="inquiryType" required>
+                                <option value="">Select inquiry type</option>
+                                <option value="sales">Sales & Pricing</option>
+                                <option value="technical">Technical Support</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="partnership">Partnership Opportunity</option>
+                                <option value="feedback">Product Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="form-error" id="inquiryError">Please select an inquiry type</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Message *</label>
+                            <textarea class="form-textarea" id="message" placeholder="Please describe your inquiry in detail..." rows="5" required></textarea>
+                            <span class="form-hint">Please provide as much detail as possible</span>
+                            <span class="form-error" id="messageError">Message is required</span>
+                        </div>
+                        
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="newsletter" checked>
+                            <label for="newsletter">Subscribe to our newsletter for updates on new features and educational insights</label>
+                        </div>
+                        
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="privacy" required>
+                            <label for="privacy">I agree to the <a href="#">Privacy Policy</a> and consent to having my data processed *</label>
+                            <span class="form-error" id="privacyError">You must agree to the privacy policy</span>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary form-submit">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="contact-info">
+                    <div class="contact-info-card">
+                        <div class="contact-info-header">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h3 class="contact-info-title">Support & Help</h3>
+                        </div>
+                        <div class="contact-info-content">
+                            <p>Our dedicated support team is available to help you with any questions or technical issues.</p>
+                            <ul class="contact-info-list">
+                                <li>
+                                    <i class="fas fa-phone"></i>
+                                    <div>
+                                        <strong>Phone Support:</strong><br>
+                                        <a href="tel:+18005551234" class="contact-info-link">+1 (800) 555-1234</a><br>
+                                        <small>Monday-Friday, 9AM-6PM EST</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                        <strong>Email Support:</strong><br>
+                                        <a href="mailto:support@studentintel.com" class="contact-info-link">support@studentintel.com</a><br>
+                                        <small>Typically responds within 2 hours</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-comments"></i>
+                                    <div>
+                                        <strong>Live Chat:</strong><br>
+                                        Available on our website during business hours
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-card">
+                        <div class="contact-info-header">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h3 class="contact-info-title">Our Offices</h3>
+                        </div>
+                        <div class="contact-info-content">
+                            <ul class="contact-info-list">
+                                <li>
+                                    <i class="fas fa-building"></i>
+                                    <div>
+                                        <strong>Headquarters</strong><br>
+                                        123 Education Ave, Suite 500<br>
+                                        San Francisco, CA 94107<br>
+                                        United States
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-building"></i>
+                                    <div>
+                                        <strong>European Office</strong><br>
+                                        Educationstrasse 45<br>
+                                        10115 Berlin<br>
+                                        Germany
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-building"></i>
+                                    <div>
+                                        <strong>Asia Pacific Office</strong><br>
+                                        Level 25, Marina Bay Financial Centre<br>
+                                        Singapore 018981
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-card">
+                        <div class="contact-info-header">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3 class="contact-info-title">Response Times</h3>
+                        </div>
+                        <div class="contact-info-content">
+                            <p>We strive to respond to all inquiries as quickly as possible.</p>
+                            <ul class="contact-info-list">
+                                <li>
+                                    <i class="fas fa-bolt"></i>
+                                    <div>
+                                        <strong>Priority Support:</strong> Within 1 hour<br>
+                                        <small>For critical system issues</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-hourglass-half"></i>
+                                    <div>
+                                        <strong>Standard Support:</strong> Within 4 hours<br>
+                                        <small>For general inquiries</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <div>
+                                        <strong>Feature Requests:</strong> Within 2 business days<br>
+                                        <small>For product suggestions</small>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Map Section -->
+    <section class="contact-map-section">
+        <div class="container">
+            <h2 class="section-title">Our Global Presence</h2>
+            <p class="section-subtitle">Serving educational institutions worldwide with local support teams</p>
+            
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <i class="fas fa-globe-americas"></i>
+                    <h3>Interactive Map</h3>
+                    <p>In a live implementation, this would display an interactive map with our office locations, partner institutions, and regional support centers.</p>
+                    <button class="btn btn-outline" style="margin-top: 1.5rem; color: white; border-color: white;">
+                        <i class="fas fa-map-marked-alt"></i> View Full Global Map
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Find quick answers to common questions about Student Intel</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What makes Student Intel different from other student management systems?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Student Intel combines traditional student management with advanced AI-powered analytics, predictive modeling, and real-time data visualization. Unlike basic systems, we provide actionable insights that help educators identify at-risk students early, personalize learning paths, and improve institutional outcomes through data-driven decision making.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How long does implementation typically take?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Implementation time varies based on institution size and complexity. For most schools, we complete implementation within 4-8 weeks. This includes data migration, system configuration, staff training, and a pilot phase. Our implementation specialists work closely with your team to ensure a smooth transition with minimal disruption.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is Student Intel compliant with educational data privacy regulations?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, Student Intel is fully compliant with FERPA (US), GDPR (EU), COPPA, and other regional educational data protection regulations. We employ enterprise-grade encryption, role-based access controls, audit logging, and regular security assessments. Our data processing agreements ensure compliance with all applicable laws and institutional policies.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can Student Intel integrate with our existing systems?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer comprehensive API integration with most common educational systems including SIS platforms, LMS systems, authentication providers, and data warehouses. Our integration specialists will work with your technical team to ensure seamless data flow between systems. We also provide pre-built connectors for popular platforms like Canvas, Blackboard, Google Classroom, and more.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What training and support do you provide after implementation?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We provide comprehensive training programs for administrators, teachers, and support staff, including live sessions, video tutorials, and detailed documentation. Post-implementation, you'll have access to our dedicated support team, regular feature updates, and ongoing professional development resources. We also offer advanced analytics training for staff who will be working with our predictive modeling tools.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="section-title">Meet Our Support Team</h2>
+            <p class="section-subtitle">Dedicated professionals ready to assist with your educational technology needs</p>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="team-member-content">
+                        <h3 class="team-member-name">Sarah Johnson</h3>
+                        <p class="team-member-role">Head of Customer Success</p>
+                        <p class="team-member-bio">Sarah leads our customer success team with 10+ years in educational technology. She specializes in implementation strategy and institutional transformation.</p>
+                        <div class="team-member-contact">
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fas fa-phone"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <div class="team-member-content">
+                        <h3 class="team-member-name">Michael Chen</h3>
+                        <p class="team-member-role">Technical Support Director</p>
+                        <p class="team-member-bio">Michael oversees our technical support operations with expertise in system integration, data security, and performance optimization for large institutions.</p>
+                        <div class="team-member-contact">
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fas fa-phone"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="team-member-content">
+                        <h3 class="team-member-name">Dr. Amanda Rodriguez</h3>
+                        <p class="team-member-role">Educational Consultant</p>
+                        <p class="team-member-bio">Former school administrator with 15 years of experience. Dr. Rodriguez helps institutions leverage data to improve student outcomes and operational efficiency.</p>
+                        <div class="team-member-contact">
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fas fa-phone"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="contact-cta">
+        <div class="container">
+            <div class="contact-cta-content">
+                <h2>Ready to Transform Your Institution?</h2>
+                <p>Schedule a personalized demo to see how Student Intel can address your specific challenges and goals.</p>
+                <div class="contact-cta-actions">
+                    <button class="btn btn-primary" onclick="showDemoModal()">
+                        <i class="fas fa-calendar-check"></i> Schedule a Demo
+                    </button>
+                    <button class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border-color: white;" onclick="window.open('tel:+18005551234')">
+                        <i class="fas fa-phone"></i> Call Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1d3557] text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center text-2xl font-bold mb-4">
+                        <i class="fas fa-graduation-cap text-[#4361ee] mr-2"></i>
+                        <span>Student<span class="text-[#4361ee]">Intel</span></span>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">Advanced student intelligence management platform for modern educational institutions.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Products</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Student Analytics</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Attendance System</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Gradebook</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Communication Hub</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Parent Portal</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Documentation</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Tutorials</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Blog</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Case Studies</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Support Center</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> About Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Careers</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Contact</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Partners</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-300">
+                <p>&copy; 2023 Student Intel Management. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Demo Modal (Hidden by default) -->
+    <div id="demoModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center;">
+        <div class="modal-content" style="background: white; border-radius: var(--border-radius-lg); padding: 3rem; max-width: 500px; width: 90%; position: relative;">
+            <button class="modal-close" onclick="closeDemoModal()" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray);">&times;</button>
+            <h2 style="margin-bottom: 1.5rem;">Schedule a Demo</h2>
+            <p style="margin-bottom: 2rem; color: var(--gray);">Fill out this form and our team will contact you to schedule a personalized demo at your convenience.</p>
+            
+            <div class="modal-form">
+                <div style="margin-bottom: 1.5rem;">
+                    <input type="text" placeholder="Your Name" style="width: 100%; padding: 0.8rem; border: 1px solid var(--gray-light); border-radius: var(--border-radius); margin-bottom: 1rem;">
+                    <input type="email" placeholder="Email Address" style="width: 100%; padding: 0.8rem; border: 1px solid var(--gray-light); border-radius: var(--border-radius); margin-bottom: 1rem;">
+                    <input type="text" placeholder="Institution Name" style="width: 100%; padding: 0.8rem; border: 1px solid var(--gray-light); border-radius: var(--border-radius); margin-bottom: 1rem;">
+                    <input type="text" placeholder="Preferred Date/Time" style="width: 100%; padding: 0.8rem; border: 1px solid var(--gray-light); border-radius: var(--border-radius); margin-bottom: 1rem;">
+                </div>
+                <button class="btn btn-primary" onclick="submitDemoRequest()" style="width: 100%;">
+                    <i class="fas fa-calendar-plus"></i> Request Demo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Mobile Menu Toggle - FIXED VERSION
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+        let isMenuOpen = false;
+
+        // Function to open mobile menu
+        function openMobileMenu() {
+            isMenuOpen = true;
+            mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenuButton.innerHTML = '<i class="fas fa-times text-2xl text-gray-900"></i>';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        }
+
+        // Function to close mobile menu
+        function closeMobileMenu() {
+            isMenuOpen = false;
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars text-2xl text-gray-900"></i>';
+            document.body.style.overflow = ''; // Restore scrolling
+
+            // Close all dropdowns
+            document.querySelectorAll('.mobile-dropdown-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.mobile-dropdown-toggle i').forEach(icon => {
+                icon.classList.remove('rotate-180');
+            });
+        }
+
+        // Toggle mobile menu
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isMenuOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        // Mobile Dropdown Toggle
+        mobileDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+
+                // Toggle current dropdown
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+
+                // Close other dropdowns
+                mobileDropdownToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.add('hidden');
+                        otherToggle.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) {
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // Sticky Header Behavior
+        const header = document.getElementById('mainHeader');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('shadow-lg', 'bg-white/98');
+
+                // Hide header on scroll down, show on scroll up
+                if (window.scrollY > lastScrollY && window.scrollY > 200 && !isMenuOpen) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+            } else {
+                header.classList.remove('shadow-lg', 'bg-white/98');
+                header.style.transform = 'translateY(0)';
+            }
+
+            lastScrollY = window.scrollY;
+        });
+
+        // Close mobile menu on larger screens
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close mobile menu with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        // Initialize header
+        document.addEventListener('DOMContentLoaded', () => {
+            // Make sure mobile menu is properly hidden on load
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+        });
+        // Contact Page JavaScript
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize components
+            initStickyHeader();
+            initDropdownMenus();
+            initFAQAccordion();
+            initFormValidation();
+            initSearchFunctionality();
+            initNotificationSystem();
+            initScrollAnimations();
+            initMobileMenu();
+            
+            // Add active class to contact link
+            const contactLink = document.querySelector('.nav-link[href="contact.html"]');
+            if (contactLink) {
+                contactLink.classList.add('active');
+            }
+        });
+        
+        // Sticky Header
+        function initStickyHeader() {
+            const header = document.querySelector('.header');
+            let lastScrollY = window.scrollY;
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                    
+                    if (window.scrollY > lastScrollY) {
+                        header.style.transform = 'translateY(-100%)';
+                    } else {
+                        header.style.transform = 'translateY(0)';
+                    }
+                } else {
+                    header.classList.remove('scrolled');
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollY = window.scrollY;
+            });
+        }
+        
+        // Dropdown Menus
+        function initDropdownMenus() {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const link = dropdown.querySelector('.nav-link');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                
+                dropdown.addEventListener('mouseenter', () => {
+                    menu.style.opacity = '1';
+                    menu.style.visibility = 'visible';
+                    menu.style.transform = 'translateY(0)';
+                });
+                
+                dropdown.addEventListener('mouseleave', () => {
+                    menu.style.opacity = '0';
+                    menu.style.visibility = 'hidden';
+                    menu.style.transform = 'translateY(10px)';
+                });
+                
+                link.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        const isActive = menu.style.visibility === 'visible';
+                        
+                        document.querySelectorAll('.dropdown-menu').forEach(otherMenu => {
+                            if (otherMenu !== menu) {
+                                otherMenu.style.opacity = '0';
+                                otherMenu.style.visibility = 'hidden';
+                                otherMenu.style.transform = 'translateY(10px)';
+                            }
+                        });
+                        
+                        if (!isActive) {
+                            menu.style.opacity = '1';
+                            menu.style.visibility = 'visible';
+                            menu.style.transform = 'translateY(0)';
+                        } else {
+                            menu.style.opacity = '0';
+                            menu.style.visibility = 'hidden';
+                            menu.style.transform = 'translateY(10px)';
+                        }
+                    }
+                });
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.dropdown')) {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.style.opacity = '0';
+                        menu.style.visibility = 'hidden';
+                        menu.style.transform = 'translateY(10px)';
+                    });
+                }
+            });
+        }
+        
+        // FAQ Accordion
+        function initFAQAccordion() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Close other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Open first FAQ by default
+            if (faqItems.length > 0) {
+                faqItems[0].classList.add('active');
+            }
+        }
+        
+        // Form Validation
+        function initFormValidation() {
+            const form = document.getElementById('contactForm');
+            
+            if (!form) return;
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                
+                // Validate name
+                const name = document.getElementById('name');
+                const nameError = document.getElementById('nameError');
+                if (!name.value.trim()) {
+                    name.classList.add('error');
+                    nameError.classList.add('show');
+                    isValid = false;
+                } else {
+                    name.classList.remove('error');
+                    nameError.classList.remove('show');
+                }
+                
+                // Validate email
+                const email = document.getElementById('email');
+                const emailError = document.getElementById('emailError');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.value.trim() || !emailRegex.test(email.value)) {
+                    email.classList.add('error');
+                    emailError.classList.add('show');
+                    isValid = false;
+                } else {
+                    email.classList.remove('error');
+                    emailError.classList.remove('show');
+                }
+                
+                // Validate inquiry type
+                const inquiryType = document.getElementById('inquiryType');
+                const inquiryError = document.getElementById('inquiryError');
+                if (!inquiryType.value) {
+                    inquiryType.classList.add('error');
+                    inquiryError.classList.add('show');
+                    isValid = false;
+                } else {
+                    inquiryType.classList.remove('error');
+                    inquiryError.classList.remove('show');
+                }
+                
+                // Validate message
+                const message = document.getElementById('message');
+                const messageError = document.getElementById('messageError');
+                if (!message.value.trim()) {
+                    message.classList.add('error');
+                    messageError.classList.add('show');
+                    isValid = false;
+                } else {
+                    message.classList.remove('error');
+                    messageError.classList.remove('show');
+                }
+                
+                // Validate privacy agreement
+                const privacy = document.getElementById('privacy');
+                const privacyError = document.getElementById('privacyError');
+                if (!privacy.checked) {
+                    privacyError.classList.add('show');
+                    isValid = false;
+                } else {
+                    privacyError.classList.remove('show');
+                }
+                
+                if (isValid) {
+                    // Show success message
+                    showNotification('Thank you for your message! We will respond within 24 hours.', 'success');
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Scroll to top of form
+                    document.querySelector('.contact-form-container').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                } else {
+                    showNotification('Please fix the errors in the form before submitting.', 'error');
+                }
+            });
+            
+            // Real-time validation
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                input.addEventListener('input', function() {
+                    // Remove error state as user types
+                    if (this.classList.contains('error')) {
+                        this.classList.remove('error');
+                        
+                        // Hide corresponding error message
+                        const errorId = this.id + 'Error';
+                        const errorElement = document.getElementById(errorId);
+                        if (errorElement) {
+                            errorElement.classList.remove('show');
+                        }
+                    }
+                });
+            });
+        }
+        
+        function validateField(field) {
+            if (field.required && !field.value.trim()) {
+                field.classList.add('error');
+                
+                const errorId = field.id + 'Error';
+                const errorElement = document.getElementById(errorId);
+                if (errorElement) {
+                    errorElement.classList.add('show');
+                }
+                return false;
+            }
+            
+            // Email validation
+            if (field.type === 'email' && field.value.trim()) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(field.value)) {
+                    field.classList.add('error');
+                    
+                    const errorId = field.id + 'Error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) {
+                        errorElement.classList.add('show');
+                    }
+                    return false;
+                }
+            }
+            
+            field.classList.remove('error');
+            
+            const errorId = field.id + 'Error';
+            const errorElement = document.getElementById(errorId);
+            if (errorElement) {
+                errorElement.classList.remove('show');
+            }
+            
+            return true;
+        }
+        
+        // Search Functionality
+        function initSearchFunctionality() {
+            const searchBox = document.querySelector('.search-box input');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            const contactTopics = [
+                'Technical Support', 'Pricing Information', 'Implementation Process',
+                'Data Privacy', 'System Integration', 'Training Programs',
+                'Feature Requests', 'Account Management', 'Billing Questions'
+            ];
+            
+            let searchTimeout;
+            
+            searchBox.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                
+                searchTimeout = setTimeout(() => {
+                    const query = e.target.value.toLowerCase().trim();
+                    
+                    if (query.length > 2) {
+                        showContactSearchResults(query);
+                    } else {
+                        hideSearchResults();
+                    }
+                }, 300);
+            });
+            
+            searchBtn.addEventListener('click', () => {
+                const query = searchBox.value.trim();
+                if (query) {
+                    performContactSearch(query);
+                }
+            });
+        }
+        
+        function showContactSearchResults(query) {
+            hideSearchResults();
+            
+            const filteredResults = contactTopics.filter(item => 
+                item.toLowerCase().includes(query)
+            );
+            
+            if (filteredResults.length > 0) {
+                const resultsContainer = document.createElement('div');
+                resultsContainer.className = 'search-results';
+                resultsContainer.innerHTML = `
+                    <div class="search-results-header">
+                        <h4>Contact Topics</h4>
+                        <span>${filteredResults.length} topics found</span>
+                    </div>
+                    <div class="search-results-list">
+                        ${filteredResults.map(result => `
+                            <div class="search-result-item" onclick="selectContactTopic('${result}')">
+                                <i class="fas fa-search"></i>
+                                <span>${result}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    .search-results {
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        right: 0;
+                        background: white;
+                        border-radius: 12px;
+                        box-shadow: 0 20px 25px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.04);
+                        margin-top: 10px;
+                        z-index: 1000;
+                        overflow: hidden;
+                    }
+                    .search-results-header {
+                        padding: 1rem 1.5rem;
+                        border-bottom: 1px solid #e9ecef;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    .search-results-header h4 {
+                        margin: 0;
+                        font-size: 1rem;
+                        color: #1d3557;
+                    }
+                    .search-results-header span {
+                        font-size: 0.85rem;
+                        color: #6c757d;
+                    }
+                    .search-results-list {
+                        max-height: 300px;
+                        overflow-y: auto;
+                    }
+                    .search-result-item {
+                        padding: 1rem 1.5rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+                    .search-result-item:hover {
+                        background: #f8f9fa;
+                    }
+                    .search-result-item i {
+                        color: #4361ee;
+                        width: 16px;
+                    }
+                `;
+                
+                document.head.appendChild(style);
+                document.querySelector('.search-box').appendChild(resultsContainer);
+            }
+        }
+        
+        function hideSearchResults() {
+            const existingResults = document.querySelector('.search-results');
+            if (existingResults) {
+                existingResults.remove();
+            }
+        }
+        
+        function performContactSearch(query) {
+            showNotification(`Searching contact topics for: "${query}"`, 'info');
+            console.log('Performing contact search for:', query);
+        }
+        
+        function selectContactTopic(topic) {
+            const searchBox = document.querySelector('.search-box input');
+            searchBox.value = topic;
+            hideSearchResults();
+            
+            // Scroll to form and pre-fill inquiry
+            document.getElementById('message').value = `I have a question about ${topic.toLowerCase()}: `;
+            document.getElementById('message').focus();
+            
+            scrollToSection('.contact-form-container');
+        }
+        
+        // Notification System
+        function initNotificationSystem() {
+            const notificationBtn = document.querySelector('.notification-btn');
+            
+            notificationBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showNotification('Contact notifications: You have 2 unread messages from our support team.', 'info');
+            });
+        }
+        
+        // Scroll Animations
+        function initScrollAnimations() {
+            const animatedElements = document.querySelectorAll('.contact-info-card, .faq-item, .team-member');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(element => observer.observe(element));
+            
+            // Add CSS for animations
+            const style = document.createElement('style');
+            style.textContent = `
+                .contact-info-card, .faq-item, .team-member {
+                    opacity: 0;
+                    transform: translateY(30px);
+                    transition: all 0.6s ease;
+                }
+                .contact-info-card.animate-in, .faq-item.animate-in, .team-member.animate-in {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                
+                /* Stagger animation */
+                .contact-info-card:nth-child(1) { transition-delay: 0.1s; }
+                .contact-info-card:nth-child(2) { transition-delay: 0.2s; }
+                .contact-info-card:nth-child(3) { transition-delay: 0.3s; }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Mobile Menu
+        function initMobileMenu() {
+            const header = document.querySelector('.header-container');
+            const nav = document.querySelector('.main-nav');
+            
+            const mobileMenuBtn = document.createElement('button');
+            mobileMenuBtn.className = 'mobile-menu-btn';
+            mobileMenuBtn.innerHTML = '<span></span><span></span><span></span>';
+            mobileMenuBtn.setAttribute('aria-label', 'Toggle menu');
+            
+            header.appendChild(mobileMenuBtn);
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                .mobile-menu-btn {
+                    display: none;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    width: 30px;
+                    height: 21px;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    padding: 0;
+                }
+                .mobile-menu-btn span {
+                    display: block;
+                    height: 3px;
+                    width: 100%;
+                    background: #1d3557;
+                    border-radius: 3px;
+                    transition: all 0.3s ease;
+                }
+                .mobile-menu-btn.active span:nth-child(1) {
+                    transform: translateY(9px) rotate(45deg);
+                }
+                .mobile-menu-btn.active span:nth-child(2) {
+                    opacity: 0;
+                }
+                .mobile-menu-btn.active span:nth-child(3) {
+                    transform: translateY(-9px) rotate(-45deg);
+                }
+                
+                @media (max-width: 768px) {
+                    .mobile-menu-btn {
+                        display: flex;
+                    }
+                    .main-nav {
+                        position: fixed;
+                        top: 70px;
+                        left: 0;
+                        right: 0;
+                        background: white;
+                        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                        padding: 1rem;
+                        transform: translateY(-100%);
+                        opacity: 0;
+                        visibility: hidden;
+                        transition: all 0.3s ease;
+                        z-index: 999;
+                    }
+                    .main-nav.active {
+                        transform: translateY(0);
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                    .nav-list {
+                        flex-direction: column;
+                        gap: 0;
+                    }
+                    .nav-item {
+                        width: 100%;
+                    }
+                    .nav-link {
+                        padding: 1rem;
+                        border-radius: 8px;
+                        margin-bottom: 0.5rem;
+                    }
+                    .dropdown-menu {
+                        position: static;
+                        width: 100%;
+                        box-shadow: none;
+                        opacity: 1;
+                        visibility: visible;
+                        transform: none;
+                        padding: 0;
+                        background: #f8f9fa;
+                        border-radius: 8px;
+                        margin-top: 0.5rem;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenuBtn.classList.toggle('active');
+                nav.classList.toggle('active');
+            });
+            
+            nav.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    mobileMenuBtn.classList.remove('active');
+                    nav.classList.remove('active');
+                }
+            });
+        }
+        
+        // Utility Functions
+        function scrollToSection(selector) {
+            const element = document.querySelector(selector);
+            if (element) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const targetPosition = element.offsetTop - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `global-notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-message">
+                    <i class="fas fa-${getNotificationIconByType(type)}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Add styles if not already added
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    .global-notification {
+                        position: fixed;
+                        top: 100px;
+                        right: 2rem;
+                        background: white;
+                        padding: 1rem 1.5rem;
+                        border-radius: 12px;
+                        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        z-index: 10000;
+                        transform: translateX(400px);
+                        opacity: 0;
+                        transition: all 0.3s ease;
+                        max-width: 400px;
+                    }
+                    .global-notification.show {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    .global-notification.info {
+                        border-left: 4px solid #4361ee;
+                    }
+                    .global-notification.success {
+                        border-left: 4px solid #4cc9f0;
+                    }
+                    .global-notification.error {
+                        border-left: 4px solid #e63946;
+                    }
+                    .notification-message {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.7rem;
+                        flex: 1;
+                    }
+                    .notification-message i {
+                        font-size: 1.2rem;
+                    }
+                    .global-notification.info .notification-message i {
+                        color: #4361ee;
+                    }
+                    .global-notification.success .notification-message i {
+                        color: #4cc9f0;
+                    }
+                    .global-notification.error .notification-message i {
+                        color: #e63946;
+                    }
+                    .notification-close {
+                        background: none;
+                        border: none;
+                        color: #6c757d;
+                        cursor: pointer;
+                        padding: 0.3rem;
+                        border-radius: 4px;
+                        transition: all 0.3s ease;
+                    }
+                    .notification-close:hover {
+                        background: #f8f9fa;
+                        color: #1d3557;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+        
+        function getNotificationIconByType(type) {
+            const icons = {
+                info: 'info-circle',
+                success: 'check-circle',
+                error: 'exclamation-circle'
+            };
+            return icons[type] || 'info-circle';
+        }
+        
+        // Demo Modal Functions
+        function showDemoModal() {
+            const modal = document.getElementById('demoModal');
+            modal.style.display = 'flex';
+        }
+        
+        function closeDemoModal() {
+            const modal = document.getElementById('demoModal');
+            modal.style.display = 'none';
+        }
+        
+        function submitDemoRequest() {
+            closeDemoModal();
+            showNotification('Demo request submitted! Our team will contact you within 2 business hours to schedule.', 'success');
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('demoModal');
+            if (e.target === modal) {
+                closeDemoModal();
+            }
+        });
+    </script>
+</body>
+</html>
