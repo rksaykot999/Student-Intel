@@ -114,7 +114,7 @@
 </head>
 <body class="bg-[#f8fafc] antialiased">
 
-    <!-- Header (exactly as provided) -->
+    <!-- Header (fully Tailwind) -->
     <header class="fixed w-full top-0 left-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300" id="mainHeader">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-20">
@@ -132,9 +132,9 @@
                     <a href="academic.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Academics</a>
                     <a href="department.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Departments</a>
                     
-                    <!-- Students Dropdown (active) -->
+                    <!-- Students Dropdown -->
                     <div class="relative group">
-                        <button class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">
+                        <button class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center">
                             Students <i class="fas fa-chevron-down ml-1 text-xs"></i>
                         </button>
                         <div class="absolute top-full left-0 w-56 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
@@ -216,7 +216,7 @@
 
                 <!-- Mobile Header Actions -->
                 <div class="mt-4 pt-4 border-t border-gray-200">
-                    <!-- Mobile Search -->
+                    <!-- Mobile Search (hidden by default, can be added if needed) -->
                     <div class="relative mb-4" id="mobileSearchContainer">
                         <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
                             <input type="text" id="mobileSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-full text-gray-900">
