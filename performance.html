@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Analytics | Student Intel Management</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Preserve essential styles (animations, section-title underline, etc.) */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --dark: #1d3557;
+            --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #1d3557;
+            padding-top: 80px; /* for fixed header */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        /* Section title underline (cannot be done purely with Tailwind's after) */
+        .section-title {
+            position: relative;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        /* For mobile dropdown animation */
+        .mobile-dropdown-content {
+            transition: all 0.3s ease;
+        }
+        /* Search results (for header) */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            margin-top: 0.5rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item:hover {
+            background: #e9ecef;
+        }
+        /* Chart placeholder styling */
+        .chart-placeholder {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6ecfe 100%);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4361ee;
+            font-size: 3rem;
+            height: 200px;
+            width: 100%;
+        }
+        /* Progress bar for GPA */
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc] antialiased">
+
+    <!-- Header (exactly as provided) -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-white/95 backdrop-blur-md shadow-sm transition-all duration-300" id="mainHeader">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a class="flex items-center" href="index.html">
+                    <i class="fas fa-graduation-cap text-2xl text-[#4361ee] mr-2"></i>
+                    <span class="text-2xl font-bold text-gray-900">
+                        Student<span class="text-[#4361ee]">Intel</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="about.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">About Us</a>
+                    <a href="academic.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Academics</a>
+                    <a href="department.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Departments</a>
+                    
+                    <!-- Students Dropdown (active) -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">
+                            Students <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full left-0 w-56 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="all-students.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> All Students
+                            </a>
+                            <a href="performance.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-chart-line w-5 mr-3 text-[#4361ee]"></i> Performance
+                            </a>
+                            <a href="attendance.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-clipboard-check w-5 mr-3 text-[#4361ee]"></i> Attendance
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Notices</a>
+                    <a href="contact.html" class="px-4 py-2 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] transition-colors">Contact Us</a>
+                </nav>
+
+                <!-- Header Actions (Desktop) -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <!-- Search Box with Popup -->
+                    <div class="relative" id="desktopSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="desktopSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-48 text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="desktopSearchResults" class="search-results"></div>
+                    </div>
+                    
+                    <!-- Login Dropdown -->
+                    <div class="relative group">
+                        <button class="px-4 py-2 rounded-full font-medium text-gray-900 hover:text-[#4361ee] transition-colors flex items-center border border-gray-300">
+                            Login <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute top-full right-0 w-48 bg-white rounded-xl shadow-2xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                            <a href="student-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login
+                            </a>
+                            <a href="admin-login.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-900 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuButton" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-bars text-2xl text-gray-900"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="lg:hidden absolute top-full left-0 w-full bg-white shadow-xl transform transition-all duration-300 -translate-y-full opacity-0 pointer-events-none">
+            <div class="container mx-auto px-4 py-6">
+                <div class="space-y-1">
+                    <a href="about.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">About Us</a>
+                    <a href="academic.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Academics</a>
+                    <a href="department.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Departments</a>
+
+                    <!-- Mobile Students Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Students <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="all-students.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">All Students</a>
+                            <a href="performance.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Performance</a>
+                            <a href="attendance.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Attendance</a>
+                        </div>
+                    </div>
+
+                    <a href="notices.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Notices</a>
+                    <a href="contact.html" class="block px-4 py-3 rounded-lg font-medium text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">Contact Us</a>
+                </div>
+
+                <!-- Mobile Header Actions -->
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <!-- Mobile Search -->
+                    <div class="relative mb-4" id="mobileSearchContainer">
+                        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-[#4361ee] transition-all">
+                            <input type="text" id="mobileSearchInput" placeholder="Search by name or roll..." class="bg-transparent outline-none w-full text-gray-900">
+                            <button class="ml-2 text-gray-500 hover:text-[#4361ee] transition-colors">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div id="mobileSearchResults" class="search-results"></div>
+                    </div>
+                    <!-- Mobile Login Dropdown -->
+                    <div class="relative">
+                        <button class="mobile-dropdown-toggle w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium bg-gray-100 text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors">
+                            Login <i class="fas fa-chevron-down text-xs transition-transform"></i>
+                        </button>
+                        <div class="mobile-dropdown-content pl-8 mt-1 space-y-1 hidden">
+                            <a href="student-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-user-graduate w-5 mr-3 text-[#4361ee]"></i> Student Login</a>
+                            <a href="admin-login.html" class="block px-4 py-2 rounded-lg text-gray-900 hover:text-[#4361ee] hover:bg-gray-100 transition-colors"><i class="fas fa-shield-alt w-5 mr-3 text-[#4361ee]"></i> Admin Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-12">
+        <div class="container mx-auto px-4">
+            <!-- Page Title -->
+            <h1 class="section-title text-4xl md:text-5xl font-bold font-heading text-[#1d3557]">Student Performance Analytics</h1>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8 text-lg">Comprehensive insights into student academic performance, trends, and individual progress.</p>
+
+            <!-- Quick Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-[#4361ee] text-xl">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <span class="text-3xl font-bold font-heading text-[#4361ee]">3.8</span>
+                    </div>
+                    <h3 class="text-gray-600 text-sm">Average GPA</h3>
+                    <p class="text-xs text-green-600 mt-1"><i class="fas fa-arrow-up"></i> +0.2 from last semester</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xl">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <span class="text-3xl font-bold font-heading text-green-600">94%</span>
+                    </div>
+                    <h3 class="text-gray-600 text-sm">Pass Rate</h3>
+                    <p class="text-xs text-green-600 mt-1">Across all departments</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xl">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <span class="text-3xl font-bold font-heading text-purple-600">15</span>
+                    </div>
+                    <h3 class="text-gray-600 text-sm">Top Performers (GPA ≥ 3.9)</h3>
+                    <p class="text-xs text-purple-600 mt-1">Out of 120 students</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-xl">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <span class="text-3xl font-bold font-heading text-orange-600">87%</span>
+                    </div>
+                    <h3 class="text-gray-600 text-sm">Average Attendance</h3>
+                    <p class="text-xs text-orange-600 mt-1">+2% from last month</p>
+                </div>
+            </div>
+
+            <!-- Filters and Tabs -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                <div class="flex space-x-2 bg-white p-1 rounded-xl shadow-sm">
+                    <button class="px-6 py-2 rounded-lg bg-[#4361ee] text-white font-medium transition" id="tabOverall">Overall</button>
+                    <button class="px-6 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition" id="tabByDept">By Department</button>
+                    <button class="px-6 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition" id="tabBySemester">By Semester</button>
+                </div>
+                <div class="flex items-center gap-3">
+                    <select id="deptFilter" class="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#4361ee] outline-none text-gray-700">
+                        <option value="all">All Departments</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Electrical Technology">Electrical Technology</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Civil Technology">Civil Technology</option>
+                        <option value="Power Technology">Power Technology</option>
+                    </select>
+                    <select id="semesterFilter" class="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#4361ee] outline-none text-gray-700">
+                        <option value="all">All Semesters</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="7">Semester 7</option>
+                        <option value="8">Semester 8</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Charts Row (placeholders) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <h3 class="text-lg font-bold mb-4 font-heading">GPA Distribution</h3>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-bar"></i>
+                        <span class="ml-2 text-lg font-medium text-gray-600">(Chart Placeholder)</span>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <h3 class="text-lg font-bold mb-4 font-heading">Department Performance</h3>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="ml-2 text-lg font-medium text-gray-600">(Chart Placeholder)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Table -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h3 class="text-lg font-bold font-heading">Student Performance Details</h3>
+                    <span class="text-sm text-gray-500" id="tableCount">Showing 10 students</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-50 text-gray-700">
+                            <tr>
+                                <th class="px-6 py-3">Rank</th>
+                                <th class="px-6 py-3">Name</th>
+                                <th class="px-6 py-3">Roll</th>
+                                <th class="px-6 py-3">Department</th>
+                                <th class="px-6 py-3">Semester</th>
+                                <th class="px-6 py-3">GPA</th>
+                                <th class="px-6 py-3">Grade</th>
+                                <th class="px-6 py-3">Attendance</th>
+                                <th class="px-6 py-3">Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody id="performanceTableBody">
+                            <!-- JS will populate -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-between items-center">
+                    <button id="prevPage" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition disabled:opacity-50" disabled>Previous</button>
+                    <span id="pageInfo">Page 1 of 1</span>
+                    <button id="nextPage" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition disabled:opacity-50" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (same as all-students and about) -->
+    <footer class="bg-[#1d3557] text-white pt-16 pb-8 footer">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                <div class="lg:col-span-1">
+                    <div class="flex items-center text-2xl font-bold mb-4">
+                        <i class="fas fa-graduation-cap text-[#4361ee] mr-2"></i>
+                        <span>Student<span class="text-[#4361ee]">Intel</span></span>
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">Transforming education through innovative technology and data-driven insights since 2008.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#4361ee] transition-colors"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Home</a></li>
+                        <li><a href="about.html" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> About Us</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Contact</a></li>
+                        <li><a href="admin.html" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Admin Panel</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Careers</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Documentation</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Research Papers</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Case Studies</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Blog</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Support Center</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Legal</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> Cookie Policy</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> GDPR Compliance</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><span class="text-[#4361ee] mr-2">›</span> FERPA Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-5 relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-[#4361ee]">Subscribe</h3>
+                    <p class="text-gray-300 mb-4">Stay updated with our latest features and educational insights.</p>
+                    <div class="subscribe-form flex">
+                        <input type="email" placeholder="Your email address" class="flex-1 px-4 py-3 rounded-l-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4361ee]">
+                        <button class="px-5 bg-[#4361ee] rounded-r-lg hover:bg-[#3a56d4] transition-colors"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-300">
+                <p>&copy; 2008-2023 Student Intel Management. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ---------- Performance Data (extended) ----------
+        const performanceData = [
+            { rank: 1, name: "Rafiq Ahmed", roll: "2024001", dept: "Computer Science", semester: 4, gpa: 3.95, grade: "A+", attendance: 98 },
+            { rank: 2, name: "Sharmin Akter", roll: "2024002", dept: "Computer Science", semester: 4, gpa: 3.92, grade: "A+", attendance: 96 },
+            { rank: 3, name: "Hasan Mahmud", roll: "2024003", dept: "Electrical Technology", semester: 6, gpa: 3.88, grade: "A", attendance: 94 },
+            { rank: 4, name: "Nusrat Jahan", roll: "2024004", dept: "Electronics", semester: 5, gpa: 3.85, grade: "A", attendance: 92 },
+            { rank: 5, name: "Tanvir Hasan", roll: "2024005", dept: "Civil Technology", semester: 4, gpa: 3.82, grade: "A", attendance: 90 },
+            { rank: 6, name: "Sumaiya Khatun", roll: "2024006", dept: "Power Technology", semester: 6, gpa: 3.80, grade: "A", attendance: 91 },
+            { rank: 7, name: "Mehedi Hasan", roll: "2024007", dept: "Computer Science", semester: 3, gpa: 3.78, grade: "A-", attendance: 89 },
+            { rank: 8, name: "Jannatul Ferdous", roll: "2024008", dept: "Electronics", semester: 5, gpa: 3.75, grade: "A-", attendance: 88 },
+            { rank: 9, name: "Shakib Al Hasan", roll: "2024009", dept: "Electrical Technology", semester: 6, gpa: 3.72, grade: "A-", attendance: 87 },
+            { rank: 10, name: "Mim Akhter", roll: "2024010", dept: "Civil Technology", semester: 4, gpa: 3.70, grade: "A-", attendance: 86 },
+            { rank: 11, name: "Abdur Rahman", roll: "2024011", dept: "Power Technology", semester: 5, gpa: 3.68, grade: "B+", attendance: 85 },
+            { rank: 12, name: "Fatema Tuz Zohra", roll: "2024012", dept: "Computer Science", semester: 3, gpa: 3.65, grade: "B+", attendance: 84 },
+            { rank: 13, name: "Rakib Hossain", roll: "2024013", dept: "Electronics", semester: 4, gpa: 3.62, grade: "B+", attendance: 83 },
+            { rank: 14, name: "Nasrin Sultana", roll: "2024014", dept: "Electrical Technology", semester: 5, gpa: 3.60, grade: "B+", attendance: 82 },
+            { rank: 15, name: "Sohel Rana", roll: "2024015", dept: "Civil Technology", semester: 4, gpa: 3.58, grade: "B", attendance: 81 },
+            { rank: 16, name: "Tania Akter", roll: "2024016", dept: "Computer Science", semester: 2, gpa: 3.55, grade: "B", attendance: 80 },
+            { rank: 17, name: "Ariful Islam", roll: "2024017", dept: "Power Technology", semester: 5, gpa: 3.52, grade: "B", attendance: 79 },
+            { rank: 18, name: "Morshed Alam", roll: "2024018", dept: "Electronics", semester: 3, gpa: 3.50, grade: "B", attendance: 78 },
+            { rank: 19, name: "Shila Khatun", roll: "2024019", dept: "Electrical Technology", semester: 4, gpa: 3.48, grade: "B-", attendance: 77 },
+            { rank: 20, name: "Riaz Uddin", roll: "2024020", dept: "Computer Science", semester: 2, gpa: 3.45, grade: "B-", attendance: 76 }
+        ];
+
+        // DOM elements
+        const tableBody = document.getElementById('performanceTableBody');
+        const deptFilter = document.getElementById('deptFilter');
+        const semesterFilter = document.getElementById('semesterFilter');
+        const tabOverall = document.getElementById('tabOverall');
+        const tabByDept = document.getElementById('tabByDept');
+        const tabBySemester = document.getElementById('tabBySemester');
+        const prevBtn = document.getElementById('prevPage');
+        const nextBtn = document.getElementById('nextPage');
+        const pageInfo = document.getElementById('pageInfo');
+        const tableCount = document.getElementById('tableCount');
+
+        // Pagination
+        let currentPage = 1;
+        const rowsPerPage = 8;
+        let filteredData = performanceData;
+
+        // Render table
+        function renderTable() {
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginated = filteredData.slice(start, end);
+
+            tableBody.innerHTML = paginated.map(s => {
+                const gpaPercent = (s.gpa / 4.0) * 100;
+                return `
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium">#${s.rank}</td>
+                        <td class="px-6 py-4">${s.name}</td>
+                        <td class="px-6 py-4">${s.roll}</td>
+                        <td class="px-6 py-4">${s.dept}</td>
+                        <td class="px-6 py-4">Semester ${s.semester}</td>
+                        <td class="px-6 py-4 font-semibold">${s.gpa.toFixed(2)}</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 rounded-full text-xs font-medium ${s.grade.includes('+') ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}">${s.grade}</span></td>
+                        <td class="px-6 py-4">${s.attendance}%</td>
+                        <td class="px-6 py-4 w-32">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${gpaPercent}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+            tableCount.textContent = `Showing ${filteredData.length} students`;
+        }
+
+        // Filter function
+        function filterData() {
+            const dept = deptFilter.value;
+            const semester = semesterFilter.value;
+            filteredData = performanceData.filter(s => {
+                const matchDept = dept === 'all' || s.dept === dept;
+                const matchSemester = semester === 'all' || s.semester === parseInt(semester);
+                return matchDept && matchSemester;
+            });
+            currentPage = 1;
+            renderTable();
+        }
+
+        // Event listeners
+        deptFilter.addEventListener('change', filterData);
+        semesterFilter.addEventListener('change', filterData);
+
+        // Tab switching (just UI, no data change)
+        [tabOverall, tabByDept, tabBySemester].forEach(tab => {
+            tab.addEventListener('click', function() {
+                [tabOverall, tabByDept, tabBySemester].forEach(t => t.classList.remove('bg-[#4361ee]', 'text-white'));
+                this.classList.add('bg-[#4361ee]', 'text-white');
+                // For demo, we keep same data, but could change filter logic
+            });
+        });
+
+        // Pagination
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+
+        // ---------- Mobile Menu (same as all-students) ----------
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+        let isMenuOpen = false;
+
+        function openMobileMenu() {
+            isMenuOpen = true;
+            mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenuButton.innerHTML = '<i class="fas fa-times text-2xl text-gray-900"></i>';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            isMenuOpen = false;
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenuButton.innerHTML = '<i class="fas fa-bars text-2xl text-gray-900"></i>';
+            document.body.style.overflow = '';
+
+            document.querySelectorAll('.mobile-dropdown-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.mobile-dropdown-toggle i').forEach(icon => {
+                icon.classList.remove('rotate-180');
+            });
+        }
+
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isMenuOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        mobileDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+
+                mobileDropdownToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.add('hidden');
+                        otherToggle.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) {
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // Sticky Header
+        const header = document.getElementById('mainHeader');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('shadow-lg', 'bg-white/98');
+
+                if (window.scrollY > lastScrollY && window.scrollY > 200 && !isMenuOpen) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+            } else {
+                header.classList.remove('shadow-lg', 'bg-white/98');
+                header.style.transform = 'translateY(0)';
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            renderTable();
+        });
+
+        // Header search (same as all-students, for consistency)
+        function initHeaderSearch(inputId, resultsId) {
+            const input = document.getElementById(inputId);
+            const resultsDiv = document.getElementById(resultsId);
+            if (!input || !resultsDiv) return;
+
+            input.addEventListener('input', function() {
+                const query = this.value.trim().toLowerCase();
+                if (query === '') {
+                    resultsDiv.classList.remove('show');
+                    return;
+                }
+
+                const filtered = performanceData.filter(s => 
+                    s.name.toLowerCase().includes(query) || 
+                    s.roll.toLowerCase().includes(query)
+                );
+
+                if (filtered.length === 0) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-gray-500 text-center">No students found</div>';
+                } else {
+                    resultsDiv.innerHTML = filtered.map(s => `
+                        <div class="search-result-item" data-name="${s.name}" data-roll="${s.roll}">
+                            <span class="font-semibold text-gray-800">${s.name}</span>
+                            <span class="text-sm text-gray-500 ml-2">${s.roll}</span>
+                            <span class="text-xs bg-[#4361ee] text-white px-2 py-0.5 rounded-full ml-2">${s.dept}</span>
+                        </div>
+                    `).join('');
+                }
+
+                resultsDiv.classList.add('show');
+
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const name = this.dataset.name;
+                        const roll = this.dataset.roll;
+                        input.value = `${name} (${roll})`;
+                        resultsDiv.classList.remove('show');
+                        // Optionally filter main table
+                        const student = performanceData.find(s => s.roll === roll);
+                        if (student) {
+                            deptFilter.value = student.dept;
+                            semesterFilter.value = student.semester.toString();
+                            filterData();
+                        }
+                    });
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!input.closest('.relative')) {
+                    resultsDiv.classList.remove('show');
+                }
+            });
+        }
+
+        initHeaderSearch('desktopSearchInput', 'desktopSearchResults');
+        initHeaderSearch('mobileSearchInput', 'mobileSearchResults');
+
+        // Subscription form demo
+        const subscribeForm = document.querySelector('.subscribe-form');
+        if (subscribeForm) {
+            subscribeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = subscribeForm.querySelector('input').value.trim();
+                if (email) {
+                    alert('Subscribed with ' + email + ' (demo)');
+                    subscribeForm.querySelector('input').value = '';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
